@@ -8,7 +8,7 @@
 import UIKit
 
 class FillTestViewController: UIViewController {
-
+    
     var words = ["1", "lol", "mothermothermothermother", "2", "mothermother", "lol", "mother", "lol", "mother", "lol", "mother",]
     var text = "Put string ___ in here ___ fucker, Fcuk you the ___ epta Fcuk you the ___ epta"
     var textAnswers = ["lol", "1", "lol", "1"]
@@ -16,7 +16,7 @@ class FillTestViewController: UIViewController {
     var textFormated: [String] = []
     var labels: [UIView] = []
     var answersLabels: [UITextField] = []
-
+    
     lazy var checkBtn: UIButton = {
         let btn = UIButton()
         btn.setTitle("Check", for: .normal)
@@ -34,44 +34,35 @@ class FillTestViewController: UIViewController {
         
         view.addSubview(checkBtn)
         view.backgroundColor = .systemBackground
-                
+        
         setConstraints()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
     
     private func setText() {
         textFormated = text.components(separatedBy: " ")
-
+        
         for text in textFormated {
-           
+            
+            var element: UIView
+            
             if text == "___" {
-                let labelTextField = UITextField()
-                labelTextField.text = text
-                labelTextField.font = .systemFont(ofSize: 18)
-                labelTextField.backgroundColor = .gray
-                labelTextField.layer.cornerRadius = 5
-                labelTextField.textAlignment = .center
-                labelTextField.delegate = self
-                labelTextField.clipsToBounds = true
-                labelTextField.addTarget(self, action: #selector(didChangeTextInTextField(_:)), for: .editingChanged)
-               
-                answersLabels.append(labelTextField)
-                labels.append(labelTextField)
-                view.addSubview(labelTextField)
+                element = createTextField(text: text)
+                answersLabels.append(element as! UITextField)
             } else {
-                let label = UILabel()
-                label.isUserInteractionEnabled = true
-                label.text = text
-                label.font = .systemFont(ofSize: 18)
-                labels.append(label)
-                view.addSubview(label)
+                element = createLabel(text: text)
             }
             
+            labels.append(element)
+            view.addSubview(element)
         }
-        
         validateLayout()
         validateLayout()
     }
-    
+        
     private func validateLayout() {
         let spacing: CGFloat = 3
         
@@ -81,35 +72,54 @@ class FillTestViewController: UIViewController {
         
         for label in labels {
             
-            x = previousLabel?.frame.maxX ?? x
+            if let previousLabel = previousLabel {
+                x = previousLabel.frame.maxX
+            }
             
             let size = label.sizeThatFits(CGSize(width: 40, height: 10))
             
-            if x + label.frame.width > view.bounds.width {
+            if x + label.frame.width > view.bounds.width - spacing {
                 x = 0
                 y += 30
                 previousLabel = nil
             }
             
-            if let label = label as? UILabel {
-                
-            
+            if label is UILabel {
                 label.frame = CGRect(x: x + spacing, y: y, width: size.width, height: size.height)
-            } else if let field = label as? UITextField {
-                if answersLabels.contains(field) {
-                    if x + label.frame.width > view.bounds.width {
-                        x = 0
-                        y += 30
-                        previousLabel = nil
-                    }
-                    
-                    field.frame = CGRect(x: x + spacing, y: y, width: size.width + 10, height: size.height)
-                }
+            }
+            
+            if label is UITextField {
+                label.frame = CGRect(x: x + spacing, y: y, width: size.width + 10, height: size.height)
             }
             
             previousLabel = label
         }
     }
+        
+    private func createTextField(text: String) -> UITextField {
+        let labelTextField = UITextField()
+        labelTextField.text = text
+        labelTextField.font = .systemFont(ofSize: 18)
+        labelTextField.backgroundColor = .gray
+        labelTextField.layer.cornerRadius = 5
+        labelTextField.textAlignment = .center
+        labelTextField.clipsToBounds = true
+        labelTextField.delegate = self
+        labelTextField.addTarget(self, action: #selector(didChangeTextInTextField(_:)), for: .editingChanged)
+        return labelTextField
+    }
+    
+    private func createLabel(text: String) -> UILabel {
+        let label = UILabel()
+        label.isUserInteractionEnabled = true
+        label.text = text
+        label.font = .systemFont(ofSize: 18)
+        return label
+    }
+
+}
+
+extension FillTestViewController {
     
     @objc private func didTapCheckBtn() {
         for (index, label) in answersLabels.enumerated() {
@@ -123,28 +133,19 @@ class FillTestViewController: UIViewController {
         }
     }
     
-    func animateLabelChange(label: UILabel) {
-        label.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-        
-        UIView.animate(withDuration: 0.25) {
-            label.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        }
-    }
-    
     @objc func didChangeTextInTextField(_ sender: UITextField) {
         UIView.animate(withDuration: 0.25) {
             self.validateLayout()
         }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
+        animateScale(element: sender, with: 1.2)
     }
     
 }
 
+//MARK: UITextField
+
 extension FillTestViewController: UITextFieldDelegate {
-        
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.text == "___" { textField.text = "" }
     }

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		B597025C2966D3D100F7E07F /* StarRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025B2966D3D100F7E07F /* StarRatingViewController.swift */; };
 		B597025F29671BD300F7E07F /* FillTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025E29671BD300F7E07F /* FillTestViewController.swift */; };
+		B59A3F9829681E66001DEE09 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59A3F9729681E66001DEE09 /* Animation.swift */; };
+		B59A3F9B2968252F001DEE09 /* QuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59A3F9A2968252F001DEE09 /* QuestionsViewController.swift */; };
+		B59A3F9D29685275001DEE09 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59A3F9C29685275001DEE09 /* QuestionView.swift */; };
 		B5C9A6AE29656433007DAB05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C9A6AD29656433007DAB05 /* AppDelegate.swift */; };
 		B5C9A6B029656433007DAB05 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C9A6AF29656433007DAB05 /* SceneDelegate.swift */; };
 		B5C9A6B229656433007DAB05 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C9A6B129656433007DAB05 /* MainTabBarViewController.swift */; };
@@ -21,6 +24,9 @@
 /* Begin PBXFileReference section */
 		B597025B2966D3D100F7E07F /* StarRatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingViewController.swift; sourceTree = "<group>"; };
 		B597025E29671BD300F7E07F /* FillTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillTestViewController.swift; sourceTree = "<group>"; };
+		B59A3F9729681E66001DEE09 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		B59A3F9A2968252F001DEE09 /* QuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsViewController.swift; sourceTree = "<group>"; };
+		B59A3F9C29685275001DEE09 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		B5C9A6AA29656433007DAB05 /* VKCupDzenInteractive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VKCupDzenInteractive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5C9A6AD29656433007DAB05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5C9A6AF29656433007DAB05 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,8 +55,26 @@
 				B5C9A6C4296565B7007DAB05 /* TestViewController.swift */,
 				B597025E29671BD300F7E07F /* FillTestViewController.swift */,
 				B597025B2966D3D100F7E07F /* StarRatingViewController.swift */,
+				B59A3F9A2968252F001DEE09 /* QuestionsViewController.swift */,
+				B59A3F9E29685299001DEE09 /* View */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		B59A3F9929681E69001DEE09 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				B59A3F9729681E66001DEE09 /* Animation.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		B59A3F9E29685299001DEE09 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B59A3F9C29685275001DEE09 /* QuestionView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		B5C9A6A129656433007DAB05 = {
@@ -73,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				B5C9A6C129656464007DAB05 /* App */,
+				B59A3F9929681E69001DEE09 /* Helper */,
 				B5C9A6C22965646B007DAB05 /* Controllers */,
 			);
 			path = VKCupDzenInteractive;
@@ -186,10 +211,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B59A3F9D29685275001DEE09 /* QuestionView.swift in Sources */,
 				B5C9A6B229656433007DAB05 /* MainTabBarViewController.swift in Sources */,
 				B5C9A6AE29656433007DAB05 /* AppDelegate.swift in Sources */,
+				B59A3F9829681E66001DEE09 /* Animation.swift in Sources */,
 				B5C9A6C729657122007DAB05 /* WordsCollectionViewCell.swift in Sources */,
 				B597025F29671BD300F7E07F /* FillTestViewController.swift in Sources */,
+				B59A3F9B2968252F001DEE09 /* QuestionsViewController.swift in Sources */,
 				B5C9A6C5296565B7007DAB05 /* TestViewController.swift in Sources */,
 				B5C9A6B029656433007DAB05 /* SceneDelegate.swift in Sources */,
 				B597025C2966D3D100F7E07F /* StarRatingViewController.swift in Sources */,

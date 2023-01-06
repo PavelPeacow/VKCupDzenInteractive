@@ -34,25 +34,6 @@ class StarRatingViewController: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
-}
-
-extension StarRatingViewController {
-    
-    @objc func didTapStar(_ sender: UITapGestureRecognizer) {
-        guard let tappedStar = sender.view else { return }
-        
-        let taptic = UIImpactFeedbackGenerator(style: .soft)
-        taptic.impactOccurred()
-        
-        if let tappedStarIndex = starsStackView.arrangedSubviews.firstIndex(of: tappedStar) {
-            rating = tappedStarIndex + 1
-        }
-    }
-    
-}
-
-extension StarRatingViewController {
-    
     func setStars() {
         for _ in 0..<5 {
             let imageView = UIImageView()
@@ -72,7 +53,7 @@ extension StarRatingViewController {
             let star = image as! UIImageView
             
             if index < rating {
-                animateStarChange(star: star)
+                animateScale(element: star, with: 1.35)
                 star.image = createStarImage(with: "star.fill")
             } else {
                 star.image = createStarImage(with: "star")
@@ -90,14 +71,21 @@ extension StarRatingViewController {
         return image
     }
     
-    func animateStarChange(star: UIImageView) {
-        star.transform = CGAffineTransform(scaleX: 1.35, y: 1.35)
+}
+
+extension StarRatingViewController {
+    
+    @objc func didTapStar(_ sender: UITapGestureRecognizer) {
+        guard let tappedStar = sender.view else { return }
         
-        UIView.animate(withDuration: 0.25) {
-            star.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        let taptic = UIImpactFeedbackGenerator(style: .soft)
+        taptic.impactOccurred()
+        
+        if let tappedStarIndex = starsStackView.arrangedSubviews.firstIndex(of: tappedStar) {
+            rating = tappedStarIndex + 1
         }
     }
-        
+    
 }
 
 extension StarRatingViewController {
