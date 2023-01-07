@@ -53,7 +53,7 @@ class StarRatingViewController: UIViewController {
             let star = image as! UIImageView
             
             if index < rating {
-                animateScale(element: star, with: 1.35)
+                star.animateScale(with: 1.35)
                 star.image = createStarImage(with: "star.fill")
             } else {
                 star.image = createStarImage(with: "star")

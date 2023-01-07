@@ -1,0 +1,109 @@
+{
+    "questionCount": 5,
+    "items": [
+        {
+            "id": 1,
+            "question": "Первый вопрос",
+            "rightAnswerIndex": 0,
+            "answers": [
+                {
+                    "answerName": "первый",
+                    "percent": 100
+                },
+                {
+                    "answerName": "второй",
+                    "percent": 100
+                },
+                {
+                    "answerName": "третий",
+                    "percent": 100
+                },
+                {
+                    "answerName": "четвертый",
+                    "percent": 100
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "question": "Второй вопрос",
+            "rightAnswerIndex": 1,
+            "answers": [
+                {
+                    "answerName": "первый",
+                    "percent": 90
+                },
+                {
+                    "answerName": "второй",
+                    "percent": 10
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "question": "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
+            "rightAnswerIndex": 0,
+            "answers": [
+                {
+                    "answerName": "первый",
+                    "percent": 50
+                },
+                {
+                    "answerName": "второй",
+                    "percent": 40
+                },
+                {
+                    "answerName": "третий",
+                    "percent": 10
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "question": "Четвертый вопрос",
+            "rightAnswerIndex": 3,
+            "answers": [
+                {
+                    "answerName": "первый",
+                    "percent": 5
+                },
+                {
+                    "answerName": "второй",
+                    "percent": 45
+                },
+                {
+                    "answerName": "третий",
+                    "percent": 40
+                },
+                {
+                    "answerName": "четвертый",
+                    "percent": 10
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "question": "Пятый вопрос",
+            "rightAnswerIndex": 1,
+            "answers": [
+                {
+                    "answerName": "первый",
+                    "percent": 70
+                },
+                {
+                    "answerName": "второй",
+                    "percent": 30
+                },
+                {
+                    "answerName": "третий",
+                    "percent": 0
+                },
+                {
+                    "answerName": "четвертый",
+                    "percent": 0
+                }
+            ]
+        },
+    ]
+
+}

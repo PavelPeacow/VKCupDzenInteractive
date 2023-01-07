@@ -29,7 +29,7 @@ class QuestionView: UIView {
         let rightMark = UIImageView()
         rightMark.isHidden = true
         rightMark.translatesAutoresizingMaskIntoConstraints = false
-        rightMark.image = UIImage(systemName: "checkmark")?.withTintColor(.green, renderingMode: .alwaysOriginal)
+        rightMark.image = UIImage(systemName: "checkmark")?.withTintColor(.white, renderingMode: .alwaysOriginal)
         return rightMark
     }()
     

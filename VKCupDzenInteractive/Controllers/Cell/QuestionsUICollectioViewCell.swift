@@ -7,10 +7,13 @@
 
 import UIKit
 
-class QuestionsViewController: UIViewController {
+class QuestionsUICollectioViewCell: UICollectionViewCell {
     
-    let questionModel = ["один", "два", "три", "четыре"]
-    let rightQuestionIndex = 0
+    static let identifier = "QuestionsViewController"
+    
+    var questionModel = [QuestionAnswer]()
+    var rightQuestionIndex = 0
+    var isCreatedQuestions = false
     
     lazy var stackViewContent: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [questionAllNumber, questionNumber])
@@ -34,6 +37,7 @@ class QuestionsViewController: UIViewController {
     lazy var questionNumber: UILabel = {
         let label = UILabel()
         label.text = "Первый вопрос"
+        label.numberOfLines = 0
         label.font = .systemFont(ofSize: 20, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -49,23 +53,41 @@ class QuestionsViewController: UIViewController {
         return btn
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
         
-        createQuestions()
-        stackViewContent.addArrangedSubview(resetBtn)
-        
-        view.backgroundColor = . systemBackground
-        view.addSubview(stackViewContent)
+
+        contentView.backgroundColor = .red
+        contentView.addSubview(stackViewContent)
         
         setConstraints()
     }
     
-    private func createQuestions() {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(question: Question, count: Int) {
+        questionNumber.text = question.question
+        questionModel = question.answers
+        rightQuestionIndex = question.rightAnswerIndex
+        questionAllNumber.text = "\(question.id)/\(count)"
         
-        for questText in questionModel {
+        if !isCreatedQuestions {
+            createQuestions()
+        }
+        isCreatedQuestions = true
+        
+        stackViewContent.addArrangedSubview(resetBtn)
+    }
+    
+     func createQuestions() {
+        
+        for (questText) in questionModel {
             let question = QuestionView()
-            question.question.text = questText
+            
+            question.question.text = questText.answerName
+            question.questionPersent.text = questText.validatePercentToString()
             
             let gesutre = UITapGestureRecognizer(target: self, action: #selector(didTapQuestion(_:)))
             question.addGestureRecognizer(gesutre)
@@ -85,25 +107,39 @@ class QuestionsViewController: UIViewController {
         guard let tappedQuestion = sender.view as? QuestionView else { return }
         
         let filterQuestions = stackViewContent.arrangedSubviews.filter({$0.isKind(of: QuestionView.self)})
+        let rightAnswer = filterQuestions[rightQuestionIndex] as! QuestionView
         
         if let tappedQuestionIndex = filterQuestions.firstIndex(of: tappedQuestion) {
 
             if tappedQuestionIndex == rightQuestionIndex {
-                animateScale(element: tappedQuestion, with: 1.2)
+                tappedQuestion.animateScale(with: 1.2)
                 tappedQuestion.rightMark.isHidden = false
                 tappedQuestion.questionPersent.isHidden = false
                 tappedQuestion.backgroundColor = .systemGreen
+                tappedQuestion.isUserInteractionEnabled = false
             } else {
-                animateWrongTapQuestion(element: tappedQuestion)
+                tappedQuestion.animateWrongTapQuestion()
+                tappedQuestion.rightMark.isHidden = false
+                tappedQuestion.rightMark.image = UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal)
                 tappedQuestion.questionPersent.isHidden = false
                 tappedQuestion.backgroundColor = .systemRed
+                tappedQuestion.isUserInteractionEnabled = false
+                
+                rightAnswer.backgroundColor = .systemGreen
+                rightAnswer.animateScale(with: 1.2)
+                rightAnswer.rightMark.isHidden = false
+                rightAnswer.questionPersent.isHidden = false
+                rightAnswer.isUserInteractionEnabled = false
             }
             
-            let otherQuestions = stackViewContent.arrangedSubviews.filter( {$0.isKind(of: QuestionView.self) })
+            let otherQuestions = stackViewContent.arrangedSubviews.filter( {$0.isKind(of: QuestionView.self) }).filter( {$0 != tappedQuestion && $0 != rightAnswer })
             otherQuestions.forEach {
                 let question = $0 as! QuestionView
                 question.questionPersent.isHidden = false
                 question.isUserInteractionEnabled = false
+                UIView.animate(withDuration: 0.2) {
+                    question.alpha = 0.8
+                }
             }
         }
     }
@@ -116,18 +152,20 @@ class QuestionsViewController: UIViewController {
             question.rightMark.isHidden = true
             question.isUserInteractionEnabled = true
             question.backgroundColor = .lightGray
+            question.alpha = 1
         }
     }
     
 }
 
-extension QuestionsViewController {
+extension QuestionsUICollectioViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            stackViewContent.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            stackViewContent.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            stackViewContent.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+            stackViewContent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            stackViewContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            stackViewContent.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+            stackViewContent.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     

@@ -140,7 +140,7 @@ extension TestViewController: UIDropInteractionDelegate {
         
         if let index = index, let selectedView = selectedView {
             selectedView.text = words[index]
-            animateScale(element: selectedView, with: 1.5)
+            selectedView.animateScale(with: 1.5)
             
             UIView.animate(withDuration: 0.25) {
                 //It just works

@@ -32,7 +32,7 @@ class MainTabBarViewController: UITabBarController {
         testFillIn.tabBarItem.title = "QuestionsFillIn"
         testFillIn.tabBarItem.image = UIImage(systemName: "questionmark.circle")
         
-        let questions = UINavigationController(rootViewController: QuestionsViewController())
+        let questions = UINavigationController(rootViewController: QuestionsListViewController())
         
         questions.tabBarItem.title = "RegularQuestions"
         questions.tabBarItem.image = UIImage(systemName: "xmark")

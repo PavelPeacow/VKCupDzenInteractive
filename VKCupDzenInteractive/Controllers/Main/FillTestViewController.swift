@@ -137,7 +137,7 @@ extension FillTestViewController {
         UIView.animate(withDuration: 0.25) {
             self.validateLayout()
         }
-        animateScale(element: sender, with: 1.2)
+        sender.animateScale(with: 1.2)
     }
     
 }
