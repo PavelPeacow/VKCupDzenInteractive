@@ -7,42 +7,47 @@
 
 import UIKit
 
-class QuestionsListViewController: UIViewController {
+final class QuestionsListViewController: UIViewController {
     
     var questions = [Question]()
     var count: Int = 0
     
     lazy var collections: UICollectionView = {
-        let layout = UICollectionViewCompositionalLayout(section: .createCategorySection())
-
+        let layout = UICollectionViewCompositionalLayout(section: .createMainSection())
+        
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(QuestionsUICollectioViewCell.self, forCellWithReuseIdentifier: QuestionsUICollectioViewCell.identifier)
         collection.dataSource = self
         
         return collection
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Task {
-            if let result = try? await JsonMockDecoder().getMockData() {
-                print(result)
-                questions = result.items
-                count = result.questionCount
-                collections.reloadData()
-            }
-            
-        }
-
         view.addSubview(collections)
+        getMockData()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collections.frame = view.bounds
     }
+    
+}
 
+private extension QuestionsListViewController {
+    
+    func getMockData() {
+        do {
+            let result = try JsonMockDecoder().getMockData(with: .questions, type: QuestionsResult.self)
+            questions = result.items
+            count = result.questionCount
+        } catch {
+            print(error)
+        }
+    }
+    
 }
 
 extension QuestionsListViewController: UICollectionViewDataSource {

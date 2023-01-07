@@ -17,7 +17,7 @@ extension UIView {
         }
     }
     
-    func animateWrongTapQuestion() {
+    func animateWrongAnswer() {
         let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
         animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
         animation.duration = 0.6

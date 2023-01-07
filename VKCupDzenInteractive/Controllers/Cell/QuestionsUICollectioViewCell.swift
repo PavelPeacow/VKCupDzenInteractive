@@ -11,12 +11,12 @@ class QuestionsUICollectioViewCell: UICollectionViewCell {
     
     static let identifier = "QuestionsViewController"
     
-    var questionModel = [QuestionAnswer]()
-    var rightQuestionIndex = 0
-    var isCreatedQuestions = false
+    private var questionModel = [QuestionAnswer]()
+    private var rightQuestionIndex = 0
+    private var didCreateQuestions = false
     
     lazy var stackViewContent: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [questionAllNumber, questionNumber])
+        let stackView = UIStackView(arrangedSubviews: [questionCount, questionDescription])
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.axis = .vertical
@@ -25,18 +25,16 @@ class QuestionsUICollectioViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    lazy var questionAllNumber: UILabel = {
+    lazy var questionCount: UILabel = {
         let label = UILabel()
-        label.text = "Вопрос 1/1"
         label.font = .systemFont(ofSize: 14)
         label.textColor = .gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    lazy var questionNumber: UILabel = {
+    lazy var questionDescription: UILabel = {
         let label = UILabel()
-        label.text = "Первый вопрос"
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 20, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -46,8 +44,9 @@ class QuestionsUICollectioViewCell: UICollectionViewCell {
     lazy var resetBtn: UIButton = {
         let btn = UIButton()
         btn.setTitle("Reset", for: .normal)
+        btn.setTitleColor(.systemBackground, for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.backgroundColor = .gray
+        btn.backgroundColor = .label
         btn.layer.cornerRadius = 15
         btn.addTarget(self, action: #selector(didTapResetBtn), for: .touchUpInside)
         return btn
@@ -56,8 +55,8 @@ class QuestionsUICollectioViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-
-        contentView.backgroundColor = .red
+        contentView.backgroundColor = .systemGray6
+        contentView.layer.cornerRadius = 15
         contentView.addSubview(stackViewContent)
         
         setConstraints()
@@ -68,104 +67,112 @@ class QuestionsUICollectioViewCell: UICollectionViewCell {
     }
     
     func configure(question: Question, count: Int) {
-        questionNumber.text = question.question
+        questionDescription.text = question.question
         questionModel = question.answers
         rightQuestionIndex = question.rightAnswerIndex
-        questionAllNumber.text = "\(question.id)/\(count)"
+        questionCount.text = "\(question.id)/\(count)"
         
-        if !isCreatedQuestions {
+        if !didCreateQuestions {
             createQuestions()
         }
-        isCreatedQuestions = true
+        didCreateQuestions = true
         
         stackViewContent.addArrangedSubview(resetBtn)
     }
     
-     func createQuestions() {
-        
-        for (questText) in questionModel {
-            let question = QuestionView()
+    private func createQuestions() {
+        for question in questionModel {
+            let questionView = QuestionView()
             
-            question.question.text = questText.answerName
-            question.questionPersent.text = questText.validatePercentToString()
+            questionView.question.text = question.answerName
+            questionView.questionPercent.text = question.validatePercentToString()
             
             let gesutre = UITapGestureRecognizer(target: self, action: #selector(didTapQuestion(_:)))
-            question.addGestureRecognizer(gesutre)
+            questionView.addGestureRecognizer(gesutre)
             
-            question.translatesAutoresizingMaskIntoConstraints = false
+            questionView.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
-                question.heightAnchor.constraint(equalToConstant: 60)
+                questionView.heightAnchor.constraint(equalToConstant: 60)
             ])
             
-            stackViewContent.addArrangedSubview(question)
+            stackViewContent.addArrangedSubview(questionView)
         }
+    }
         
+    private func setAnswerFocus(answer: QuestionView, isRightAnswer: Bool) {
+        isRightAnswer ? answer.animateScale(with: 1.2) : answer.animateWrongAnswer()
+        
+        answer.rightMark.isHidden = false
+        answer.questionPercent.isHidden = false
+        answer.isUserInteractionEnabled = false
+        
+        let image = createAnswerImage(isRightAnswer: isRightAnswer)
+        
+        answer.rightMark.image = image
+        answer.backgroundColor = isRightAnswer ? .systemGreen : .systemRed
     }
     
-    @objc private func didTapQuestion(_ sender: UITapGestureRecognizer) {
+    private func setOtherAnswers(tappedAnswer: QuestionView, rightAnswer: QuestionView) {
+        let otherQuestions = stackViewContent.arrangedSubviews.filter { $0.isKind(of: QuestionView.self) && $0 != tappedAnswer && $0 != rightAnswer }
+        otherQuestions.forEach {
+            let question = $0 as! QuestionView
+            question.questionPercent.isHidden = false
+            question.isUserInteractionEnabled = false
+            UIView.animate(withDuration: 0.2) {
+                question.alpha = 0.5
+            }
+        }
+    }
+    
+    private func createAnswerImage(isRightAnswer: Bool) -> UIImage {
+        let systemName = isRightAnswer ? "checkmark" : "xmark"
+        let rightAnsmwerImage = UIImage(systemName: systemName)?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        return rightAnsmwerImage!
+    }
+
+}
+
+private extension QuestionsUICollectioViewCell {
+    
+    @objc func didTapQuestion(_ sender: UITapGestureRecognizer) {
         guard let tappedQuestion = sender.view as? QuestionView else { return }
         
-        let filterQuestions = stackViewContent.arrangedSubviews.filter({$0.isKind(of: QuestionView.self)})
-        let rightAnswer = filterQuestions[rightQuestionIndex] as! QuestionView
+        createTapticFeedback(with: .medium)
         
-        if let tappedQuestionIndex = filterQuestions.firstIndex(of: tappedQuestion) {
-
-            if tappedQuestionIndex == rightQuestionIndex {
-                tappedQuestion.animateScale(with: 1.2)
-                tappedQuestion.rightMark.isHidden = false
-                tappedQuestion.questionPersent.isHidden = false
-                tappedQuestion.backgroundColor = .systemGreen
-                tappedQuestion.isUserInteractionEnabled = false
-            } else {
-                tappedQuestion.animateWrongTapQuestion()
-                tappedQuestion.rightMark.isHidden = false
-                tappedQuestion.rightMark.image = UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-                tappedQuestion.questionPersent.isHidden = false
-                tappedQuestion.backgroundColor = .systemRed
-                tappedQuestion.isUserInteractionEnabled = false
-                
-                rightAnswer.backgroundColor = .systemGreen
-                rightAnswer.animateScale(with: 1.2)
-                rightAnswer.rightMark.isHidden = false
-                rightAnswer.questionPersent.isHidden = false
-                rightAnswer.isUserInteractionEnabled = false
-            }
-            
-            let otherQuestions = stackViewContent.arrangedSubviews.filter( {$0.isKind(of: QuestionView.self) }).filter( {$0 != tappedQuestion && $0 != rightAnswer })
-            otherQuestions.forEach {
-                let question = $0 as! QuestionView
-                question.questionPersent.isHidden = false
-                question.isUserInteractionEnabled = false
-                UIView.animate(withDuration: 0.2) {
-                    question.alpha = 0.8
-                }
-            }
+        let rightAnswer = stackViewContent.arrangedSubviews.filter {$0.isKind(of: QuestionView.self)} [rightQuestionIndex] as! QuestionView
+       
+        if rightAnswer == tappedQuestion {
+            setAnswerFocus(answer: tappedQuestion, isRightAnswer: true)
+        } else {
+            setAnswerFocus(answer: tappedQuestion, isRightAnswer: false)
+            setAnswerFocus(answer: rightAnswer, isRightAnswer: true)
         }
+        
+        setOtherAnswers(tappedAnswer: tappedQuestion, rightAnswer: rightAnswer)
     }
     
-    @objc private func didTapResetBtn() {
+    @objc func didTapResetBtn() {
         let questions = stackViewContent.arrangedSubviews.filter( {$0.isKind(of: QuestionView.self) })
         questions.forEach {
             let question = $0 as! QuestionView
-            question.questionPersent.isHidden = true
+            question.questionPercent.isHidden = true
             question.rightMark.isHidden = true
             question.isUserInteractionEnabled = true
-            question.backgroundColor = .lightGray
+            question.backgroundColor = .orange
             question.alpha = 1
         }
     }
-    
 }
 
-extension QuestionsUICollectioViewCell {
+private extension QuestionsUICollectioViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            stackViewContent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            stackViewContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            stackViewContent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+            stackViewContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
             stackViewContent.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
-            stackViewContent.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            stackViewContent.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
         ])
     }
     

@@ -13,14 +13,29 @@ enum DecoderError: Error {
     case canNotDecodeData
 }
 
+enum JsonFileUrl {
+    case questions
+    case fillInQuestions
+    
+    var type: URL? {
+        switch self {
+        case .questions:
+            return Bundle.main.url(forResource: "QuestionsMock", withExtension: "json")
+        case .fillInQuestions:
+            return Bundle.main.url(forResource: "FillInQuestionsMock", withExtension: "json")
+        }
+    }
+    
+}
+
 final class JsonMockDecoder {
     
-    func getMockData() async throws -> QuestionsResult {
-        guard let url = Bundle.main.url(forResource: "QuestionsMock", withExtension: "json") else { throw DecoderError.badUrl }
+    func getMockData<T: Decodable>(with url: JsonFileUrl, type: T.Type) throws -> T {
+        guard let url = url.type else { throw DecoderError.badUrl }
         
         guard let data = try? Data(contentsOf: url) else { throw DecoderError.canNotGetData }
         
-        guard let result = try? JSONDecoder().decode(QuestionsResult.self, from: data) else { throw DecoderError.canNotDecodeData }
+        guard let result = try? JSONDecoder().decode(T.self, from: data) else { throw DecoderError.canNotDecodeData }
         
         return result
     }

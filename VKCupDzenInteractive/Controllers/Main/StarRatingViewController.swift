@@ -78,8 +78,7 @@ extension StarRatingViewController {
     @objc func didTapStar(_ sender: UITapGestureRecognizer) {
         guard let tappedStar = sender.view else { return }
         
-        let taptic = UIImpactFeedbackGenerator(style: .soft)
-        taptic.impactOccurred()
+        createTapticFeedback(with: .soft)
         
         if let tappedStarIndex = starsStackView.arrangedSubviews.firstIndex(of: tappedStar) {
             rating = tappedStarIndex + 1

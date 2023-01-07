@@ -9,176 +9,58 @@ import UIKit
 
 class FillTestViewController: UIViewController {
     
-    var words = ["1", "lol", "mothermothermothermother", "2", "mothermother", "lol", "mother", "lol", "mother", "lol", "mother",]
-    var text = "Put string ___ in here ___ fucker, Fcuk you the ___ epta Fcuk you the ___ epta"
-    var textAnswers = ["lol", "1", "lol", "1"]
+    var fillInQuestions = [FillInQuestion]()
     
-    var textFormated: [String] = []
-    var labels: [UIView] = []
-    var answersLabels: [UITextField] = []
-    
-    lazy var checkBtn: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Check", for: .normal)
-        btn.backgroundColor = .orange
-        btn.layer.cornerRadius = 15
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.addTarget(self, action: #selector(didTapCheckBtn), for: .touchUpInside)
-        return btn
+    lazy var collections: UICollectionView = {
+        let layout = UICollectionViewCompositionalLayout(section: .createFillInTextSection())
+        
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.register(FillInQuestionCollectionViewCell.self, forCellWithReuseIdentifier: FillInQuestionCollectionViewCell.identifier)
+        collection.dataSource = self
+        
+        return collection
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setText()
+        getMockData()
         
-        view.addSubview(checkBtn)
-        view.backgroundColor = .systemBackground
-        
-        setConstraints()
+        view.addSubview(collections)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
-    
-    private func setText() {
-        textFormated = text.components(separatedBy: " ")
-        
-        for text in textFormated {
-            
-            var element: UIView
-            
-            if text == "___" {
-                element = createTextField(text: text)
-                answersLabels.append(element as! UITextField)
-            } else {
-                element = createLabel(text: text)
-            }
-            
-            labels.append(element)
-            view.addSubview(element)
-        }
-        validateLayout()
-        validateLayout()
-    }
-        
-    private func validateLayout() {
-        let spacing: CGFloat = 3
-        
-        var x: CGFloat = 0
-        var y: CGFloat = 90
-        var previousLabel: UIView?
-        
-        for label in labels {
-            
-            if let previousLabel = previousLabel {
-                x = previousLabel.frame.maxX
-            }
-            
-            let size = label.sizeThatFits(CGSize(width: 40, height: 10))
-            
-            if x + label.frame.width > view.bounds.width - spacing {
-                x = 0
-                y += 30
-                previousLabel = nil
-            }
-            
-            if label is UILabel {
-                label.frame = CGRect(x: x + spacing, y: y, width: size.width, height: size.height)
-            }
-            
-            if label is UITextField {
-                label.frame = CGRect(x: x + spacing, y: y, width: size.width + 10, height: size.height)
-            }
-            
-            previousLabel = label
-        }
-    }
-        
-    private func createTextField(text: String) -> UITextField {
-        let labelTextField = UITextField()
-        labelTextField.text = text
-        labelTextField.font = .systemFont(ofSize: 18)
-        labelTextField.backgroundColor = .gray
-        labelTextField.layer.cornerRadius = 5
-        labelTextField.textAlignment = .center
-        labelTextField.clipsToBounds = true
-        labelTextField.delegate = self
-        labelTextField.addTarget(self, action: #selector(didChangeTextInTextField(_:)), for: .editingChanged)
-        return labelTextField
-    }
-    
-    private func createLabel(text: String) -> UILabel {
-        let label = UILabel()
-        label.isUserInteractionEnabled = true
-        label.text = text
-        label.font = .systemFont(ofSize: 18)
-        return label
-    }
-
-}
-
-extension FillTestViewController {
-    
-    @objc private func didTapCheckBtn() {
-        for (index, label) in answersLabels.enumerated() {
-            let text = label.text
-            
-            if textAnswers[index] == text {
-                label.backgroundColor = .green
-            } else {
-                label.backgroundColor = .red
-            }
-        }
-    }
-    
-    @objc func didChangeTextInTextField(_ sender: UITextField) {
-        UIView.animate(withDuration: 0.25) {
-            self.validateLayout()
-        }
-        sender.animateScale(with: 1.2)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collections.frame = view.bounds
     }
     
 }
 
-//MARK: UITextField
-
-extension FillTestViewController: UITextFieldDelegate {
+private extension FillTestViewController {
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField.text == "___" { textField.text = "" }
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.text == "" { textField.text = "___" }
-        UIView.animate(withDuration: 0.25) {
-            self.validateLayout()
+    func getMockData() {
+        do {
+            let result = try JsonMockDecoder().getMockData(with: .fillInQuestions, type: [FillInQuestion].self)
+            fillInQuestions = result
+        } catch {
+            print(error)
         }
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        UIView.animate(withDuration: 0.25) {
-            self.validateLayout()
-        }
-        return true
     }
     
 }
 
-
-//MARK: BURGER KING GOVNO
-
-extension FillTestViewController {
+extension FillTestViewController: UICollectionViewDataSource {
     
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            checkBtn.topAnchor.constraint(equalTo: labels.last!.bottomAnchor, constant: 15),
-            checkBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            checkBtn.heightAnchor.constraint(equalToConstant: 30),
-            checkBtn.widthAnchor.constraint(equalToConstant: 100),
-        ])
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        fillInQuestions.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FillInQuestionCollectionViewCell.identifier, for: indexPath) as! FillInQuestionCollectionViewCell
+        
+        cell.configure(fillInQuestion: fillInQuestions[indexPath.item])
+        
+        return cell
     }
     
 }

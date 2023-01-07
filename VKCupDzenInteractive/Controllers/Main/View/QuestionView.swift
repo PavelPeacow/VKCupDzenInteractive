@@ -7,34 +7,30 @@
 
 import UIKit
 
-class QuestionView: UIView {
+final class QuestionView: UIView {
     
     lazy var question: UILabel = {
         let question = UILabel()
-        question.text = "1"
         question.translatesAutoresizingMaskIntoConstraints = false
         return question
     }()
     
-    lazy var questionPersent: UILabel = {
+    lazy var questionPercent: UILabel = {
         let questionPersent = UILabel()
         questionPersent.isHidden = true
         questionPersent.translatesAutoresizingMaskIntoConstraints = false
-        questionPersent.text = "100%"
         return questionPersent
     }()
-    
     
     lazy var rightMark: UIImageView = {
         let rightMark = UIImageView()
         rightMark.isHidden = true
         rightMark.translatesAutoresizingMaskIntoConstraints = false
-        rightMark.image = UIImage(systemName: "checkmark")?.withTintColor(.white, renderingMode: .alwaysOriginal)
         return rightMark
     }()
     
     lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [rightMark, questionPersent])
+        let stackView = UIStackView(arrangedSubviews: [rightMark, questionPercent])
         stackView.spacing = 5
         stackView.alignment = .fill
         stackView.distribution = .fill
@@ -46,17 +42,22 @@ class QuestionView: UIView {
     init() {
         super.init(frame: .zero)
         
-        backgroundColor = .lightGray
+        backgroundColor = .orange
         layer.cornerRadius = 15
         
         addSubview(stackView)
         addSubview(question)
+        
         setConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+}
+
+extension QuestionView {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
@@ -67,5 +68,4 @@ class QuestionView: UIView {
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
-    
 }

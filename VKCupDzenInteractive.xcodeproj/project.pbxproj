@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		B50DF9612969671000715CC8 /* QuestionsMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B50DF9602969671000715CC8 /* QuestionsMock.json */; };
 		B50DF9632969677800715CC8 /* JsonDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF9622969677800715CC8 /* JsonDecoder.swift */; };
+		B50DF966296989F000715CC8 /* FillInQuestionsMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B50DF965296989F000715CC8 /* FillInQuestionsMock.json */; };
+		B50DF96829698C7500715CC8 /* FillInQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF96729698C7500715CC8 /* FillInQuestion.swift */; };
+		B50DF96A2969919700715CC8 /* FillInQuestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF9692969919700715CC8 /* FillInQuestionCollectionViewCell.swift */; };
+		B50DF96C2969A1E300715CC8 /* TapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF96B2969A1E300715CC8 /* TapticEngine.swift */; };
 		B597025C2966D3D100F7E07F /* StarRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025B2966D3D100F7E07F /* StarRatingViewController.swift */; };
 		B597025F29671BD300F7E07F /* FillTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025E29671BD300F7E07F /* FillTestViewController.swift */; };
 		B59A3F9829681E66001DEE09 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59A3F9729681E66001DEE09 /* Animation.swift */; };
@@ -29,6 +33,10 @@
 /* Begin PBXFileReference section */
 		B50DF9602969671000715CC8 /* QuestionsMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = QuestionsMock.json; sourceTree = "<group>"; };
 		B50DF9622969677800715CC8 /* JsonDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonDecoder.swift; sourceTree = "<group>"; };
+		B50DF965296989F000715CC8 /* FillInQuestionsMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FillInQuestionsMock.json; sourceTree = "<group>"; };
+		B50DF96729698C7500715CC8 /* FillInQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillInQuestion.swift; sourceTree = "<group>"; };
+		B50DF9692969919700715CC8 /* FillInQuestionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillInQuestionCollectionViewCell.swift; sourceTree = "<group>"; };
+		B50DF96B2969A1E300715CC8 /* TapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticEngine.swift; sourceTree = "<group>"; };
 		B597025B2966D3D100F7E07F /* StarRatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingViewController.swift; sourceTree = "<group>"; };
 		B597025E29671BD300F7E07F /* FillTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillTestViewController.swift; sourceTree = "<group>"; };
 		B59A3F9729681E66001DEE09 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
@@ -63,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				B50DF9602969671000715CC8 /* QuestionsMock.json */,
+				B50DF965296989F000715CC8 /* FillInQuestionsMock.json */,
 				B50DF9622969677800715CC8 /* JsonDecoder.swift */,
 			);
 			path = JsonMockData;
@@ -85,6 +94,7 @@
 			children = (
 				B59A3F9729681E66001DEE09 /* Animation.swift */,
 				B59A3FA329686700001DEE09 /* CompLayoutSection.swift */,
+				B50DF96B2969A1E300715CC8 /* TapticEngine.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -101,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				B59A3FA529686B57001DEE09 /* QuestionsResult.swift */,
+				B50DF96729698C7500715CC8 /* FillInQuestion.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -127,6 +138,7 @@
 				B5C9A6C129656464007DAB05 /* App */,
 				B59A3F9929681E69001DEE09 /* Helper */,
 				B50DF9642969730A00715CC8 /* JsonMockData */,
+				B59A3FA729686B5B001DEE09 /* Model */,
 				B5C9A6C22965646B007DAB05 /* Controllers */,
 			);
 			path = VKCupDzenInteractive;
@@ -150,7 +162,6 @@
 				B5C9A6C929657947007DAB05 /* TabBar */,
 				B597025D29671B4400F7E07F /* Main */,
 				B5C9A6C829657943007DAB05 /* Cell */,
-				B59A3FA729686B5B001DEE09 /* Model */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -158,6 +169,7 @@
 		B5C9A6C829657943007DAB05 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				B50DF9692969919700715CC8 /* FillInQuestionCollectionViewCell.swift */,
 				B59A3F9A2968252F001DEE09 /* QuestionsUICollectioViewCell.swift */,
 				B5C9A6C629657122007DAB05 /* WordsCollectionViewCell.swift */,
 			);
@@ -233,6 +245,7 @@
 				B50DF9612969671000715CC8 /* QuestionsMock.json in Resources */,
 				B5C9A6BA29656434007DAB05 /* LaunchScreen.storyboard in Resources */,
 				B5C9A6B729656434007DAB05 /* Assets.xcassets in Resources */,
+				B50DF966296989F000715CC8 /* FillInQuestionsMock.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,16 +259,19 @@
 				B50DF9632969677800715CC8 /* JsonDecoder.swift in Sources */,
 				B59A3FA629686B57001DEE09 /* QuestionsResult.swift in Sources */,
 				B59A3FA429686700001DEE09 /* CompLayoutSection.swift in Sources */,
+				B50DF96C2969A1E300715CC8 /* TapticEngine.swift in Sources */,
 				B59A3F9D29685275001DEE09 /* QuestionView.swift in Sources */,
 				B59A3FA229686020001DEE09 /* QuestionsListViewController.swift in Sources */,
 				B5C9A6B229656433007DAB05 /* MainTabBarViewController.swift in Sources */,
 				B5C9A6AE29656433007DAB05 /* AppDelegate.swift in Sources */,
 				B59A3F9829681E66001DEE09 /* Animation.swift in Sources */,
 				B5C9A6C729657122007DAB05 /* WordsCollectionViewCell.swift in Sources */,
+				B50DF96829698C7500715CC8 /* FillInQuestion.swift in Sources */,
 				B597025F29671BD300F7E07F /* FillTestViewController.swift in Sources */,
 				B59A3F9B2968252F001DEE09 /* QuestionsUICollectioViewCell.swift in Sources */,
 				B5C9A6C5296565B7007DAB05 /* TestViewController.swift in Sources */,
 				B5C9A6B029656433007DAB05 /* SceneDelegate.swift in Sources */,
+				B50DF96A2969919700715CC8 /* FillInQuestionCollectionViewCell.swift in Sources */,
 				B597025C2966D3D100F7E07F /* StarRatingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
