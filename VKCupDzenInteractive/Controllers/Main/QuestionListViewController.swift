@@ -1,5 +1,5 @@
 //
-//  QuestionsListViewController.swift
+//  QuestionListViewController.swift
 //  VKCupDzenInteractive
 //
 //  Created by Павел Кай on 06.01.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class QuestionsListViewController: UIViewController {
+final class QuestionListViewController: UIViewController {
     
     var questions = [Question]()
     var count: Int = 0
@@ -16,7 +16,7 @@ final class QuestionsListViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout(section: .createMainSection())
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(QuestionsUICollectioViewCell.self, forCellWithReuseIdentifier: QuestionsUICollectioViewCell.identifier)
+        collection.register(QuestionCollectioViewCell.self, forCellWithReuseIdentifier: QuestionCollectioViewCell.identifier)
         collection.dataSource = self
         
         return collection
@@ -36,7 +36,7 @@ final class QuestionsListViewController: UIViewController {
     
 }
 
-private extension QuestionsListViewController {
+private extension QuestionListViewController {
     
     func getMockData() {
         do {
@@ -50,14 +50,14 @@ private extension QuestionsListViewController {
     
 }
 
-extension QuestionsListViewController: UICollectionViewDataSource {
+extension QuestionListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         questions.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuestionsUICollectioViewCell.identifier, for: indexPath) as! QuestionsUICollectioViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuestionCollectioViewCell.identifier, for: indexPath) as! QuestionCollectioViewCell
         
         cell.configure(question: questions[indexPath.item], count: count)
         

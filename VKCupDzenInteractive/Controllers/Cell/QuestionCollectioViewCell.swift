@@ -1,5 +1,5 @@
 //
-//  QuestionsViewController.swift
+//  QuestionCollectioViewCell.swift
 //  VKCupDzenInteractive
 //
 //  Created by Павел Кай on 06.01.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class QuestionsUICollectioViewCell: UICollectionViewCell {
+class QuestionCollectioViewCell: UICollectionViewCell {
     
     static let identifier = "QuestionsViewController"
     
@@ -48,7 +48,7 @@ class QuestionsUICollectioViewCell: UICollectionViewCell {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.backgroundColor = .label
         btn.layer.cornerRadius = 15
-        btn.addTarget(self, action: #selector(didTapResetBtn), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(didTapResetBtn(_:)), for: .touchUpInside)
         return btn
     }()
     
@@ -133,7 +133,7 @@ class QuestionsUICollectioViewCell: UICollectionViewCell {
 
 }
 
-private extension QuestionsUICollectioViewCell {
+private extension QuestionCollectioViewCell {
     
     @objc func didTapQuestion(_ sender: UITapGestureRecognizer) {
         guard let tappedQuestion = sender.view as? QuestionView else { return }
@@ -152,7 +152,9 @@ private extension QuestionsUICollectioViewCell {
         setOtherAnswers(tappedAnswer: tappedQuestion, rightAnswer: rightAnswer)
     }
     
-    @objc func didTapResetBtn() {
+    @objc func didTapResetBtn(_ sender: UIButton) {
+        sender.animateScale(with: 0.95)
+        
         let questions = stackViewContent.arrangedSubviews.filter( {$0.isKind(of: QuestionView.self) })
         questions.forEach {
             let question = $0 as! QuestionView
@@ -165,7 +167,7 @@ private extension QuestionsUICollectioViewCell {
     }
 }
 
-private extension QuestionsUICollectioViewCell {
+private extension QuestionCollectioViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([

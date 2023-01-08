@@ -7,15 +7,15 @@
 
 import UIKit
 
-class FillTestViewController: UIViewController {
+class FillTextViewController: UIViewController {
     
     var fillInQuestions = [FillInQuestion]()
     
-    lazy var collections: UICollectionView = {
+    lazy var collection: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout(section: .createFillInTextSection())
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(FillInQuestionCollectionViewCell.self, forCellWithReuseIdentifier: FillInQuestionCollectionViewCell.identifier)
+        collection.register(FillInTextCollectionViewCell.self, forCellWithReuseIdentifier: FillInTextCollectionViewCell.identifier)
         collection.dataSource = self
         
         return collection
@@ -26,17 +26,17 @@ class FillTestViewController: UIViewController {
         
         getMockData()
         
-        view.addSubview(collections)
+        view.addSubview(collection)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        collections.frame = view.bounds
+        collection.frame = view.bounds
     }
     
 }
 
-private extension FillTestViewController {
+private extension FillTextViewController {
     
     func getMockData() {
         do {
@@ -49,14 +49,14 @@ private extension FillTestViewController {
     
 }
 
-extension FillTestViewController: UICollectionViewDataSource {
+extension FillTextViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         fillInQuestions.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FillInQuestionCollectionViewCell.identifier, for: indexPath) as! FillInQuestionCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FillInTextCollectionViewCell.identifier, for: indexPath) as! FillInTextCollectionViewCell
         
         cell.configure(fillInQuestion: fillInQuestions[indexPath.item])
         

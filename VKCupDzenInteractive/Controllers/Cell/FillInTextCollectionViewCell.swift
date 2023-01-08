@@ -1,5 +1,5 @@
 //
-//  FillInQuestionCollectionViewCell.swift
+//  FillInTextCollectionViewCell.swift
 //  VKCupDzenInteractive
 //
 //  Created by Павел Кай on 07.01.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FillInQuestionCollectionViewCell: UICollectionViewCell {
+class FillInTextCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "FillInQuestionCollectionViewCell"
     
@@ -27,7 +27,7 @@ class FillInQuestionCollectionViewCell: UICollectionViewCell {
         btn.backgroundColor = .label
         btn.layer.cornerRadius = 15
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.addTarget(self, action: #selector(didTapCheckBtn), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(didTapCheckBtn(_:)), for: .touchUpInside)
         return btn
     }()
     
@@ -119,18 +119,18 @@ class FillInQuestionCollectionViewCell: UICollectionViewCell {
     }
     
     private func createTextField(text: String) -> UITextField {
-        let labelTextField = UITextField()
-        labelTextField.text = text
-        labelTextField.autocorrectionType = .no
-        labelTextField.autocapitalizationType = .none
-        labelTextField.font = .systemFont(ofSize: 18)
-        labelTextField.backgroundColor = .orange
-        labelTextField.layer.cornerRadius = 5
-        labelTextField.textAlignment = .center
-        labelTextField.clipsToBounds = true
-        labelTextField.delegate = self
-        labelTextField.addTarget(self, action: #selector(didChangeTextInTextField(_:)), for: .editingChanged)
-        return labelTextField
+        let textField = UITextField()
+        textField.text = text
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.font = .systemFont(ofSize: 18)
+        textField.backgroundColor = .orange
+        textField.layer.cornerRadius = 5
+        textField.textAlignment = .center
+        textField.clipsToBounds = true
+        textField.delegate = self
+        textField.addTarget(self, action: #selector(didChangeTextInTextField(_:)), for: .editingChanged)
+        return textField
     }
     
     private func createLabel(text: String) -> UILabel {
@@ -143,9 +143,10 @@ class FillInQuestionCollectionViewCell: UICollectionViewCell {
     
 }
 
-extension FillInQuestionCollectionViewCell {
+extension FillInTextCollectionViewCell {
     
-    @objc private func didTapCheckBtn() {
+    @objc private func didTapCheckBtn(_ sender: UIButton) {
+        sender.animateScale(with: 0.95)
         for (index, label) in answersLabels.enumerated() {
             let text = label.text
             
@@ -162,11 +163,9 @@ extension FillInQuestionCollectionViewCell {
     }
     
     @objc func didChangeTextInTextField(_ sender: UITextField) {
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.validateLayout()
-        }
         sender.animateScale(with: 1.2)
         UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.validateLayout()
             self?.invalidateIntrinsicContentSize()
             self?.layoutIfNeeded()
         }
@@ -177,7 +176,7 @@ extension FillInQuestionCollectionViewCell {
 
 //MARK: UITextField
 
-extension FillInQuestionCollectionViewCell: UITextFieldDelegate {
+extension FillInTextCollectionViewCell: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.text == "___" { textField.text = "" }
@@ -203,7 +202,7 @@ extension FillInQuestionCollectionViewCell: UITextFieldDelegate {
 
 //MARK: BURGER KING GOVNO
 
-extension FillInQuestionCollectionViewCell {
+extension FillInTextCollectionViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([

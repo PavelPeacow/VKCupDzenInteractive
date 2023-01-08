@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainTabBarViewController.swift
 //  VKCupDzenInteractive
 //
 //  Created by Павел Кай on 04.01.2023.
@@ -17,27 +17,27 @@ class MainTabBarViewController: UITabBarController {
 
     private func setTabBar() {
         
-        let test = UINavigationController(rootViewController: TestViewController())
+        let dragText = UINavigationController(rootViewController: DragTextViewController())
         
-        test.tabBarItem.title = "Questions"
-        test.tabBarItem.image = UIImage(systemName: "questionmark.app")
+        dragText.tabBarItem.title = "Questions"
+        dragText.tabBarItem.image = UIImage(systemName: "questionmark.app")
         
         let starRating = UINavigationController(rootViewController: StarRatingViewController())
         
         starRating.tabBarItem.title = "Rating"
         starRating.tabBarItem.image = UIImage(systemName: "star")
         
-        let testFillIn = UINavigationController(rootViewController: FillTestViewController())
+        let fillInText = UINavigationController(rootViewController: FillTextViewController())
         
-        testFillIn.tabBarItem.title = "QuestionsFillIn"
-        testFillIn.tabBarItem.image = UIImage(systemName: "questionmark.circle")
+        fillInText.tabBarItem.title = "QuestionsFillIn"
+        fillInText.tabBarItem.image = UIImage(systemName: "questionmark.circle")
         
-        let questions = UINavigationController(rootViewController: QuestionsListViewController())
+        let questions = UINavigationController(rootViewController: QuestionListViewController())
         
         questions.tabBarItem.title = "RegularQuestions"
         questions.tabBarItem.image = UIImage(systemName: "xmark")
         
-        setViewControllers([test, testFillIn, questions, starRating], animated: true)
+        setViewControllers([dragText, fillInText, questions, starRating], animated: true)
     }
     
 }
