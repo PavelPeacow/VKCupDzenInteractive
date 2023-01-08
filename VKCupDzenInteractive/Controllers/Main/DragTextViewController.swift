@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DragTextViewController: UIViewController {
+final class DragTextViewController: UIViewController {
     
     var fillInQuestions = [FillInQuestion]()
     

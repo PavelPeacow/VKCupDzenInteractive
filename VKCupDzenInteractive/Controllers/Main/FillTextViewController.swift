@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FillTextViewController: UIViewController {
+final class FillTextViewController: UIViewController {
     
     var fillInQuestions = [FillInQuestion]()
     

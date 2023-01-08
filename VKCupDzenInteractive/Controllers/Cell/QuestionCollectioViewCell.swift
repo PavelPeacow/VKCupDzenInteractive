@@ -7,13 +7,17 @@
 
 import UIKit
 
-class QuestionCollectioViewCell: UICollectionViewCell {
+final class QuestionCollectioViewCell: UICollectionViewCell {
+    
+    //MARK: Properties
     
     static let identifier = "QuestionsViewController"
     
     private var questionModel = [QuestionAnswer]()
     private var rightQuestionIndex = 0
     private var didCreateQuestions = false
+    
+    //MARK: View
     
     lazy var stackViewContent: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [questionCount, questionDescription])
@@ -52,6 +56,8 @@ class QuestionCollectioViewCell: UICollectionViewCell {
         return btn
     }()
     
+    //MARK: Lifecycle
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
@@ -66,6 +72,8 @@ class QuestionCollectioViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: Configure
+    
     func configure(question: Question, count: Int) {
         questionDescription.text = question.question
         questionModel = question.answers
@@ -79,6 +87,8 @@ class QuestionCollectioViewCell: UICollectionViewCell {
         
         stackViewContent.addArrangedSubview(resetBtn)
     }
+    
+    //MARK: Set questions layout
     
     private func createQuestions() {
         for question in questionModel {
@@ -99,6 +109,8 @@ class QuestionCollectioViewCell: UICollectionViewCell {
             stackViewContent.addArrangedSubview(questionView)
         }
     }
+    
+    //MARK: Questions logic
         
     private func setAnswerFocus(answer: QuestionView, isRightAnswer: Bool) {
         isRightAnswer ? answer.animateScale(with: 1.2) : answer.animateWrongAnswer()
@@ -133,6 +145,8 @@ class QuestionCollectioViewCell: UICollectionViewCell {
 
 }
 
+//MARK: Target function
+
 private extension QuestionCollectioViewCell {
     
     @objc func didTapQuestion(_ sender: UITapGestureRecognizer) {
@@ -166,6 +180,8 @@ private extension QuestionCollectioViewCell {
         }
     }
 }
+
+//MARK: Constraints
 
 private extension QuestionCollectioViewCell {
     

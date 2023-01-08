@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StarRatingViewController: UIViewController {
+final class StarRatingViewController: UIViewController {
     
     var rating = 1 {
         didSet {

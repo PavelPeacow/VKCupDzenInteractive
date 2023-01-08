@@ -7,18 +7,22 @@
 
 import UIKit
 
-class FillInTextCollectionViewCell: UICollectionViewCell {
+final class FillInTextCollectionViewCell: UICollectionViewCell {
+    
+    //MARK: Properties
     
     static let identifier = "FillInQuestionCollectionViewCell"
     
-    var text = ""
-    var rightAnswers = [String]()
+    private var text = ""
+    private var rightAnswers = [String]()
     
-    var didSetText = false
+    private var didSetText = false
     
-    var textFormated: [String] = []
-    var labels: [UIView] = []
-    var answersLabels: [UITextField] = []
+    private var textFormated: [String] = []
+    private var labels: [UIView] = []
+    private var answersLabels: [UITextField] = []
+    
+    //MARK: View
     
     lazy var checkBtn: UIButton = {
         let btn = UIButton()
@@ -30,6 +34,8 @@ class FillInTextCollectionViewCell: UICollectionViewCell {
         btn.addTarget(self, action: #selector(didTapCheckBtn(_:)), for: .touchUpInside)
         return btn
     }()
+    
+    //MARK: Lifecycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -53,6 +59,8 @@ class FillInTextCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: Configure
+    
     func configure(fillInQuestion: FillInQuestion) {
         text = fillInQuestion.text
         rightAnswers = fillInQuestion.rightAnswers
@@ -63,6 +71,8 @@ class FillInTextCollectionViewCell: UICollectionViewCell {
         }
         didSetText = true
     }
+    
+    //MARK: Set text layout
     
     private func setText() {
         textFormated = text.components(separatedBy: " ")
@@ -118,6 +128,8 @@ class FillInTextCollectionViewCell: UICollectionViewCell {
         
     }
     
+    //MARK: Create UIElements
+    
     private func createTextField(text: String) -> UITextField {
         let textField = UITextField()
         textField.text = text
@@ -143,9 +155,11 @@ class FillInTextCollectionViewCell: UICollectionViewCell {
     
 }
 
-extension FillInTextCollectionViewCell {
+//MARK: Target function
+
+private extension FillInTextCollectionViewCell {
     
-    @objc private func didTapCheckBtn(_ sender: UIButton) {
+    @objc func didTapCheckBtn(_ sender: UIButton) {
         sender.animateScale(with: 0.95)
         for (index, label) in answersLabels.enumerated() {
             let text = label.text
@@ -166,6 +180,7 @@ extension FillInTextCollectionViewCell {
         sender.animateScale(with: 1.2)
         UIView.animate(withDuration: 0.25) { [weak self] in
             self?.validateLayout()
+            self?.validateLayout()
             self?.invalidateIntrinsicContentSize()
             self?.layoutIfNeeded()
         }
@@ -174,7 +189,7 @@ extension FillInTextCollectionViewCell {
     
 }
 
-//MARK: UITextField
+//MARK: UITextFieldDelegate
 
 extension FillInTextCollectionViewCell: UITextFieldDelegate {
     
@@ -182,6 +197,9 @@ extension FillInTextCollectionViewCell: UITextFieldDelegate {
         if textField.text == "___" { textField.text = "" }
         UIView.animate(withDuration: 0.25) { [weak self] in
             self?.validateLayout()
+            self?.validateLayout()
+            self?.invalidateIntrinsicContentSize()
+            self?.layoutIfNeeded()
         }
     }
     
@@ -189,6 +207,9 @@ extension FillInTextCollectionViewCell: UITextFieldDelegate {
         if textField.text == "" { textField.text = "___" }
         UIView.animate(withDuration: 0.25) { [weak self] in
             self?.validateLayout()
+            self?.validateLayout()
+            self?.invalidateIntrinsicContentSize()
+            self?.layoutIfNeeded()
         }
     }
     
@@ -199,10 +220,9 @@ extension FillInTextCollectionViewCell: UITextFieldDelegate {
     
 }
 
+//MARK: Constraints
 
-//MARK: BURGER KING GOVNO
-
-extension FillInTextCollectionViewCell {
+private extension FillInTextCollectionViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([

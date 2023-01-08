@@ -7,21 +7,25 @@
 
 import UIKit
 
-class DragTextCollectionViewCell: UICollectionViewCell {
+final class DragTextCollectionViewCell: UICollectionViewCell {
+    
+    //MARK: Properties
     
     static let identifier = "DragTextCollectionViewCell"
     
-    var possibleAnswers = [String]()
-    var text = ""
-    var rightAnswers =  [String]()
+    private var possibleAnswers = [String]()
+    private var text = ""
+    private var rightAnswers =  [String]()
     
-    var textFormated: [String] = []
-    var labels: [UILabel] = []
-    var answersLabels: [UILabel] = []
+    private var textFormated: [String] = []
+    private var labels: [UILabel] = []
+    private var answersLabels: [UILabel] = []
     
-    var possibleAnswersLabels: [UILabel] = []
+    private var possibleAnswersLabels: [UILabel] = []
     
-    var didSetText = false
+    private var didSetText = false
+    
+    //MARK: View
     
     lazy var checkBtn: UIButton = {
         let btn = UIButton()
@@ -34,6 +38,8 @@ class DragTextCollectionViewCell: UICollectionViewCell {
         return btn
     }()
     
+    //MARK: Lifecycle
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -41,12 +47,13 @@ class DragTextCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 15
         
         contentView.addSubview(checkBtn)
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: Configure
     
     func configure(fillInQuestion: FillInQuestion) {
         possibleAnswers = fillInQuestion.possibleAnswers
@@ -61,22 +68,16 @@ class DragTextCollectionViewCell: UICollectionViewCell {
         didSetText = true
     }
     
+    //MARK: Create text layout
+    
     private func setText() {
         textFormated = text.components(separatedBy: " ")
         
         for text in textFormated {
-            let label = UILabel()
-            label.isUserInteractionEnabled = true
-            label.text = text
-            label.font = .systemFont(ofSize: 18)
+            var label = createLabel(text: text)
             
             if label.text == "___" {
-                let dropInteraction = UIDropInteraction(delegate: self)
-                label.addInteraction(dropInteraction)
-                label.backgroundColor = .orange
-                label.layer.cornerRadius = 5
-                label.textAlignment = .center
-                label.clipsToBounds = true
+                label = createDropInLabel(text: text)
                 answersLabels.append(label)
             }
             
@@ -119,36 +120,11 @@ class DragTextCollectionViewCell: UICollectionViewCell {
         }
     }
     
-}
-
-extension DragTextCollectionViewCell: UIDragInteractionDelegate {
-    
-    func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
-        let view = interaction.view as! UILabel
-        let item = view.text!
-        let itemProvider = NSItemProvider(object: item as NSString)
-        let dragItem = UIDragItem(itemProvider: itemProvider)
-        dragItem.localObject = view
-        return [dragItem]
-    }
-    
+    //MARK: Create possible answers layout
     
     private func setPossibleAnswersText() {
-        
         for text in possibleAnswers {
-            let label = UILabel()
-            label.isUserInteractionEnabled = true
-            
-            let dragInteraction = UIDragInteraction(delegate: self)
-            label.addInteraction(dragInteraction)
-            
-            label.text = text
-            label.font = .systemFont(ofSize: 18)
-            label.layer.borderColor = UIColor.orange.cgColor
-            label.layer.cornerRadius = 10
-            label.layer.borderWidth = 1
-            label.textAlignment = .center
-            
+            let label = createPossibleAnswerLabel(text: text)
             possibleAnswersLabels.append(label)
             contentView.addSubview(label)
         }
@@ -179,15 +155,54 @@ extension DragTextCollectionViewCell: UIDragInteractionDelegate {
             }
             
             label.frame = CGRect(x: x + spacing, y: y, width: size.width + 15, height: size.height + 5)
-
+            
             previousLabel = label
         }
+    }
+    
+    //MARK: Create UIElements
+    
+    private func createLabel(text: String) -> UILabel {
+        let label = UILabel()
+        label.isUserInteractionEnabled = true
+        label.text = text
+        label.font = .systemFont(ofSize: 18)
+        return label
+    }
+    
+    private func createDropInLabel(text: String) -> UILabel {
+        let label = createLabel(text: text)
+        let dropInteraction = UIDropInteraction(delegate: self)
+        label.addInteraction(dropInteraction)
+        label.backgroundColor = .orange
+        label.layer.cornerRadius = 5
+        label.textAlignment = .center
+        label.clipsToBounds = true
+        return label
+    }
+    
+    private func createPossibleAnswerLabel(text: String?, position: CGRect = .zero) -> UILabel {
+        let label = UILabel()
+        label.isUserInteractionEnabled = true
+        label.frame = position
         
+        let dragInteraction = UIDragInteraction(delegate: self)
+        label.addInteraction(dragInteraction)
+        
+        label.text = text
+        label.font = .systemFont(ofSize: 18)
+        label.layer.borderColor = UIColor.orange.cgColor
+        label.layer.cornerRadius = 10
+        label.layer.borderWidth = 1
+        label.textAlignment = .center
+        return label
     }
     
 }
 
-extension DragTextCollectionViewCell {
+//MARK: Target function
+
+private extension DragTextCollectionViewCell {
     
     @objc private func didTapCheckBtn(_ sender: UIButton) {
         sender.animateScale(with: 0.95)
@@ -208,83 +223,77 @@ extension DragTextCollectionViewCell {
     
 }
 
-//MARK: DropInteraction
+//MARK: DragDelegate
+
+extension DragTextCollectionViewCell: UIDragInteractionDelegate {
+    
+    func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
+        let view = interaction.view as! UILabel
+        let item = view.text!
+        let itemProvider = NSItemProvider(object: item as NSString)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        dragItem.localObject = view
+        return [dragItem]
+    }
+        
+}
+
+//MARK: DropDelegate
 
 extension DragTextCollectionViewCell: UIDropInteractionDelegate {
     
     func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
         if let label = session.items.first?.localObject as? UILabel {
-            if !possibleAnswersLabels.contains(label) { return UIDropProposal(operation: .forbidden) }
+            if possibleAnswersLabels.contains(label) { return UIDropProposal(operation: .copy) }
+        }
+        return UIDropProposal(operation: .forbidden)
+    }
+        
+    func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
+        guard let draggedLabel = session.items.first?.localObject as? UILabel else { return}
+        let touchCoordinate = session.location(in: contentView)
+        guard let destinationLabel = contentView.hitTest(touchCoordinate, with: nil) as? UILabel else { return }
+        guard let draggedLabelIndex = possibleAnswersLabels.firstIndex(of: draggedLabel) else { return }
+        
+        if destinationLabel.text == "___" {
+            destinationLabel.text = draggedLabel.text
+        } else {
+            swapLabels(first: draggedLabel, second: destinationLabel, at: draggedLabelIndex)
         }
         
-        return UIDropProposal(operation: .copy)
+        destinationLabel.animateScale(with: 1.2)
+        
+        if let draggedLabel = possibleAnswersLabels.firstIndex(of: draggedLabel) {
+            possibleAnswersLabels.remove(at: draggedLabel).removeFromSuperview()
+        }
+        
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            //It just works
+            self?.validateLayout()
+            self?.validateLayout()
+            
+            self?.validatePossibleAnswersLayout()
+            self?.validatePossibleAnswersLayout()
+            
+            self?.invalidateIntrinsicContentSize()
+            self?.layoutIfNeeded()
+        }
     }
     
-    func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
-        let index = session.items.first?.localObject as? UILabel
-        let point = session.location(in: contentView)
-        let selectedView = contentView.hitTest(point, with: nil) as? UILabel
+    private func swapLabels(first: UILabel, second: UILabel, at index: Int) {
+        let label = createPossibleAnswerLabel(text: second.text, position: second.frame)
+        contentView.addSubview(label)
         
-        if let index = index, let selectedView = selectedView {
-            
-            guard let selectedViewIndex = possibleAnswersLabels.firstIndex(of: index) else { return }
-            print(selectedViewIndex)
-            
-            if selectedView.text == "___" {
-                selectedView.text = index.text
-            } else {
-                
-                let label = UILabel()
-                label.isUserInteractionEnabled = true
-                label.frame = selectedView.frame
-                
-                let dragInteraction = UIDragInteraction(delegate: self)
-                label.addInteraction(dragInteraction)
-                
-                label.text = selectedView.text
-                label.font = .systemFont(ofSize: 18)
-                label.layer.borderColor = UIColor.orange.cgColor
-                label.layer.cornerRadius = 10
-                label.layer.borderWidth = 1
-                label.textAlignment = .center
-                
-                contentView.addSubview(label)
-                
-                possibleAnswersLabels.insert(label, at: selectedViewIndex)
-                
-                selectedView.text = index.text
-            }
-            
-            selectedView.animateScale(with: 1.2)
-            
-            
-            
-            if let view = possibleAnswersLabels.firstIndex(of: index) {
-                possibleAnswersLabels.remove(at: view).removeFromSuperview()
-                
-            }
-           
-            
-            UIView.animate(withDuration: 0.25) { [weak self] in
-                //It just works
-                self?.validateLayout()
-                self?.validateLayout()
-                
-                self?.validatePossibleAnswersLayout()
-                self?.validatePossibleAnswersLayout()
-                
-                self?.invalidateIntrinsicContentSize()
-                self?.layoutIfNeeded()
-            }
-            
-        }
+        possibleAnswersLabels.insert(label, at: index)
+        
+        second.text = first.text
     }
     
 }
 
-//MARK: BURGER KING GOVNO
+//MARK: Constraints
 
-extension DragTextCollectionViewCell {
+private extension DragTextCollectionViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
