@@ -17,6 +17,11 @@ final class MainTabBarViewController: UITabBarController {
 
     private func setTabBar() {
         
+        let compare = UINavigationController(rootViewController: CompareViewController())
+        
+        compare.tabBarItem.title = "Questions"
+        compare.tabBarItem.image = UIImage(systemName: "questionmark.app")
+        
         let dragText = UINavigationController(rootViewController: DragTextViewController())
         
         dragText.tabBarItem.title = "Questions"
@@ -37,7 +42,7 @@ final class MainTabBarViewController: UITabBarController {
         questions.tabBarItem.title = "RegularQuestions"
         questions.tabBarItem.image = UIImage(systemName: "xmark")
         
-        setViewControllers([dragText, fillInText, questions, starRating], animated: true)
+        setViewControllers([compare, dragText, fillInText, questions, starRating], animated: true)
     }
     
 }
