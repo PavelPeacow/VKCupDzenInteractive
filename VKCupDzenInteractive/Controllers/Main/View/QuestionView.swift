@@ -11,6 +11,7 @@ final class QuestionView: UIView {
     
     lazy var question: UILabel = {
         let question = UILabel()
+        question.numberOfLines = 0
         question.translatesAutoresizingMaskIntoConstraints = false
         return question
     }()
@@ -29,10 +30,22 @@ final class QuestionView: UIView {
         return rightMark
     }()
     
+    lazy var stackViewMain: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [question, stackView])
+        stackView.spacing = 5
+        stackView.isHidden = false
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        return stackView
+    }()
+    
     lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [rightMark, questionPercent])
         stackView.spacing = 5
-        stackView.alignment = .fill
+        stackView.isHidden = true
+        stackView.alignment = .center
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
@@ -42,11 +55,11 @@ final class QuestionView: UIView {
     init() {
         super.init(frame: .zero)
         
+        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .orange
         layer.cornerRadius = 15
         
-        addSubview(stackView)
-        addSubview(question)
+        addSubview(stackViewMain)
         
         setConstraints()
     }
@@ -61,11 +74,13 @@ extension QuestionView {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            question.centerYAnchor.constraint(equalTo: centerYAnchor),
-            question.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            self.bottomAnchor.constraint(equalTo: stackViewMain.bottomAnchor, constant: 15),
             
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackViewMain.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackViewMain.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            stackViewMain.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            
+            stackView.widthAnchor.constraint(equalToConstant: 60),
         ])
     }
 }

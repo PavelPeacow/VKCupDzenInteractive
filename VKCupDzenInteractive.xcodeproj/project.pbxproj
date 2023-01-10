@@ -15,6 +15,7 @@
 		B50DF96C2969A1E300715CC8 /* TapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF96B2969A1E300715CC8 /* TapticEngine.swift */; };
 		B50DF96E2969A9A700715CC8 /* DragTextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF96D2969A9A700715CC8 /* DragTextCollectionViewCell.swift */; };
 		B50DF970296AE85400715CC8 /* CompareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF96F296AE85400715CC8 /* CompareViewController.swift */; };
+		B50DF972296C722B00715CC8 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF971296C722B00715CC8 /* MainButton.swift */; };
 		B597025C2966D3D100F7E07F /* StarRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025B2966D3D100F7E07F /* StarRatingViewController.swift */; };
 		B597025F29671BD300F7E07F /* FillTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025E29671BD300F7E07F /* FillTextViewController.swift */; };
 		B59A3F9829681E66001DEE09 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59A3F9729681E66001DEE09 /* Animation.swift */; };
@@ -40,6 +41,7 @@
 		B50DF96B2969A1E300715CC8 /* TapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticEngine.swift; sourceTree = "<group>"; };
 		B50DF96D2969A9A700715CC8 /* DragTextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragTextCollectionViewCell.swift; sourceTree = "<group>"; };
 		B50DF96F296AE85400715CC8 /* CompareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareViewController.swift; sourceTree = "<group>"; };
+		B50DF971296C722B00715CC8 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
 		B597025B2966D3D100F7E07F /* StarRatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingViewController.swift; sourceTree = "<group>"; };
 		B597025E29671BD300F7E07F /* FillTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillTextViewController.swift; sourceTree = "<group>"; };
 		B59A3F9729681E66001DEE09 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
@@ -77,6 +79,14 @@
 				B50DF9622969677800715CC8 /* JsonDecoder.swift */,
 			);
 			path = JsonMockData;
+			sourceTree = "<group>";
+		};
+		B50DF973296C722F00715CC8 /* Subclass */ = {
+			isa = PBXGroup;
+			children = (
+				B50DF971296C722B00715CC8 /* MainButton.swift */,
+			);
+			path = Subclass;
 			sourceTree = "<group>";
 		};
 		B597025D29671B4400F7E07F /* Main */ = {
@@ -142,6 +152,7 @@
 				B59A3F9929681E69001DEE09 /* Helper */,
 				B50DF9642969730A00715CC8 /* JsonMockData */,
 				B59A3FA729686B5B001DEE09 /* Model */,
+				B50DF973296C722F00715CC8 /* Subclass */,
 				B5C9A6C22965646B007DAB05 /* Controllers */,
 			);
 			path = VKCupDzenInteractive;
@@ -273,6 +284,7 @@
 				B50DF96829698C7500715CC8 /* FillInQuestion.swift in Sources */,
 				B597025F29671BD300F7E07F /* FillTextViewController.swift in Sources */,
 				B59A3F9B2968252F001DEE09 /* QuestionCollectioViewCell.swift in Sources */,
+				B50DF972296C722B00715CC8 /* MainButton.swift in Sources */,
 				B5C9A6C5296565B7007DAB05 /* DragTextViewController.swift in Sources */,
 				B5C9A6B029656433007DAB05 /* SceneDelegate.swift in Sources */,
 				B50DF96A2969919700715CC8 /* FillInTextCollectionViewCell.swift in Sources */,

@@ -24,13 +24,8 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
     
     //MARK: View
     
-    lazy var checkBtn: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Check", for: .normal)
-        btn.setTitleColor(.systemBackground, for: .normal)
-        btn.backgroundColor = .label
-        btn.layer.cornerRadius = 15
-        btn.translatesAutoresizingMaskIntoConstraints = false
+    lazy var checkBtn: MainButton = {
+        let btn = MainButton(title: "Проверить")
         btn.addTarget(self, action: #selector(didTapCheckBtn(_:)), for: .touchUpInside)
         return btn
     }()
@@ -44,7 +39,6 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 15
         
         contentView.addSubview(checkBtn)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -91,7 +85,6 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
             contentView.addSubview(element)
         }
         validateLayout()
-        validateLayout()
     }
     
     private func validateLayout() {
@@ -101,31 +94,47 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
         var y: CGFloat = 10
         var previousLabel: UIView?
         
+        //set basic frames
+        for label in labels {
+            let width = label.intrinsicContentSize.width
+            let height = label.intrinsicContentSize.height
+            
+            label.frame = CGRect(x: x + spacing, y: y, width: width, height: height)
+        }
+        
         for label in labels {
             
             if let previousLabel = previousLabel {
                 x = previousLabel.frame.maxX
             }
             
-            let size = label.sizeThatFits(CGSize(width: 40, height: 10))
-            
             if x + label.frame.width > contentView.bounds.width - 10 {
                 x = 10
                 y += 30
-                previousLabel = nil
             }
             
+            let width = label.intrinsicContentSize.width
+            let height = label.intrinsicContentSize.height
+            
             if label is UILabel {
-                label.frame = CGRect(x: x + spacing, y: y, width: size.width, height: size.height)
+                label.frame = CGRect(x: x + spacing, y: y, width: width, height: height)
             }
             
             if label is UITextField {
-                label.frame = CGRect(x: x + spacing, y: y, width: size.width + 10, height: size.height)
+                label.frame = CGRect(x: x + spacing, y: y, width: width + 10, height: height)
             }
             
             previousLabel = label
         }
         
+    }
+    
+    private func animateLayoutChanges() {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.validateLayout()
+            self?.invalidateIntrinsicContentSize()
+            self?.layoutIfNeeded()
+        }
     }
     
     //MARK: Create UIElements
@@ -153,14 +162,9 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
         return label
     }
     
-}
-
-//MARK: Target function
-
-private extension FillInTextCollectionViewCell {
+    //MARK: Logic
     
-    @objc func didTapCheckBtn(_ sender: UIButton) {
-        sender.animateScale(with: 0.95)
+    private func checkAnswers() {
         for (index, label) in answersLabels.enumerated() {
             let text = label.text
             
@@ -170,21 +174,26 @@ private extension FillInTextCollectionViewCell {
                 label.backgroundColor = .green
                 label.animateScale(with: 1.2)
             } else {
-                label.animateWrongAnswer()
                 label.backgroundColor = .red
+                label.animateWrongAnswer()
             }
         }
     }
     
+}
+
+//MARK: Target function
+
+private extension FillInTextCollectionViewCell {
+    
+    @objc func didTapCheckBtn(_ sender: UIButton) {
+        sender.animateScale(with: 0.95)
+        checkAnswers()
+    }
+    
     @objc func didChangeTextInTextField(_ sender: UITextField) {
         sender.animateScale(with: 1.2)
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.validateLayout()
-            self?.validateLayout()
-            self?.invalidateIntrinsicContentSize()
-            self?.layoutIfNeeded()
-        }
-        
+        animateLayoutChanges()
     }
     
 }
@@ -195,22 +204,12 @@ extension FillInTextCollectionViewCell: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.text == "___" { textField.text = "" }
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.validateLayout()
-            self?.validateLayout()
-            self?.invalidateIntrinsicContentSize()
-            self?.layoutIfNeeded()
-        }
+        animateLayoutChanges()
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text == "" { textField.text = "___" }
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.validateLayout()
-            self?.validateLayout()
-            self?.invalidateIntrinsicContentSize()
-            self?.layoutIfNeeded()
-        }
+        animateLayoutChanges()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -230,7 +229,7 @@ private extension FillInTextCollectionViewCell {
             checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15).withPriority(999),
             checkBtn.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             checkBtn.heightAnchor.constraint(equalToConstant: 30),
-            checkBtn.widthAnchor.constraint(equalToConstant: 100),
+            checkBtn.widthAnchor.constraint(equalToConstant: 120),
         ])
     }
     

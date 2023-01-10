@@ -9,7 +9,7 @@ import UIKit
 
 final class StarRatingViewController: UIViewController {
     
-    var rating = 1 {
+    private var rating = 1 {
         didSet {
             updateStarsRating()
         }
@@ -34,7 +34,7 @@ final class StarRatingViewController: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
-    func setStars() {
+    private func setStars() {
         for _ in 0..<5 {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFit
@@ -48,7 +48,7 @@ final class StarRatingViewController: UIViewController {
         updateStarsRating()
     }
     
-    func updateStarsRating() {
+    private func updateStarsRating() {
         for (index, image) in starsStackView.arrangedSubviews.enumerated() {
             let star = image as! UIImageView
             
@@ -61,7 +61,7 @@ final class StarRatingViewController: UIViewController {
         }
     }
     
-    func createStarImage(with sfsymbol: String) -> UIImage {
+    private func createStarImage(with sfsymbol: String) -> UIImage {
         var image = UIImage(systemName: sfsymbol) ?? UIImage(systemName: "xmark")!
         let config = UIImage.SymbolConfiguration(scale: .large)
         
@@ -73,7 +73,7 @@ final class StarRatingViewController: UIViewController {
     
 }
 
-extension StarRatingViewController {
+private extension StarRatingViewController {
     
     @objc func didTapStar(_ sender: UITapGestureRecognizer) {
         guard let tappedStar = sender.view else { return }
@@ -87,7 +87,7 @@ extension StarRatingViewController {
     
 }
 
-extension StarRatingViewController {
+private extension StarRatingViewController {
     
     func setConstraints() {
         NSLayoutConstraint.activate([

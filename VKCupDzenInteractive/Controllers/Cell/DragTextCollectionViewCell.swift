@@ -27,14 +27,9 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
     
     //MARK: View
     
-    lazy var checkBtn: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Check", for: .normal)
-        btn.setTitleColor(.systemBackground, for: .normal)
-        btn.backgroundColor = .label
-        btn.layer.cornerRadius = 15
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.addTarget(self, action: #selector(didTapCheckBtn), for: .touchUpInside)
+    lazy var checkBtn: MainButton = {
+        let btn = MainButton(title: "Проверить")
+        btn.addTarget(self, action: #selector(didTapCheckBtn(_:)), for: .touchUpInside)
         return btn
     }()
     
@@ -84,8 +79,6 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
             labels.append(label)
             contentView.addSubview(label)
         }
-        
-        validateLayout()
         validateLayout()
     }
     
@@ -94,7 +87,15 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
         
         var x: CGFloat = 10
         var y: CGFloat = 10
-        var previousLabel: UILabel?
+        var previousLabel: UIView?
+        
+        //set basic frames
+        for label in labels {
+            let width = label.intrinsicContentSize.width
+            let height = label.intrinsicContentSize.height
+            
+            label.frame = CGRect(x: x + spacing, y: y, width: width, height: height)
+        }
         
         for label in labels {
             
@@ -102,22 +103,23 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
                 x = previousLabel.frame.maxX
             }
             
-            let size = label.sizeThatFits(CGSize(width: 40, height: 10))
-            
-            if x + label.frame.width > contentView.bounds.width {
+            if x + label.frame.width > contentView.bounds.width - 10 {
                 x = 10
                 y += 30
-                previousLabel = nil
             }
             
-            label.frame = CGRect(x: x + spacing, y: y, width: size.width, height: size.height)
+            let width = label.intrinsicContentSize.width
+            let height = label.intrinsicContentSize.height
+            
+            label.frame = CGRect(x: x + spacing, y: y, width: width, height: height)
             
             if answersLabels.contains(label) {
-                label.frame = CGRect(x: x + spacing, y: y, width: size.width + 10, height: size.height)
+                label.frame = CGRect(x: x + spacing, y: y, width: width + 10, height: height)
             }
             
             previousLabel = label
         }
+        
     }
     
     //MARK: Create possible answers layout
@@ -128,8 +130,6 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
             possibleAnswersLabels.append(label)
             contentView.addSubview(label)
         }
-        
-        validatePossibleAnswersLayout()
         validatePossibleAnswersLayout()
     }
     
@@ -140,21 +140,29 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
         var y: CGFloat = labels.last!.frame.maxY + 30
         var previousLabel: UILabel?
         
+        //set basic frames
+        for label in possibleAnswersLabels {
+            let width = label.intrinsicContentSize.width
+            let height = label.intrinsicContentSize.height
+            
+            label.frame = CGRect(x: x + spacing, y: y, width: width, height: height)
+        }
+        
         for label in possibleAnswersLabels {
             
             if let previousLabel = previousLabel {
                 x = previousLabel.frame.maxX
             }
             
-            let size = label.sizeThatFits(CGSize(width: 40, height: 10))
-            
             if x + label.frame.width > contentView.bounds.width - 30 {
                 x = 30
                 y += 30
-                previousLabel = nil
             }
             
-            label.frame = CGRect(x: x + spacing, y: y, width: size.width + 15, height: size.height + 5)
+            let width = label.intrinsicContentSize.width
+            let height = label.intrinsicContentSize.height
+            
+            label.frame = CGRect(x: x + spacing, y: y, width: width + 15, height: height + 5)
             
             previousLabel = label
         }
@@ -198,14 +206,27 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
         return label
     }
     
-}
-
-//MARK: Target function
-
-private extension DragTextCollectionViewCell {
+    //MARK: Logic
     
-    @objc private func didTapCheckBtn(_ sender: UIButton) {
-        sender.animateScale(with: 0.95)
+    private func swapLabels(first: UILabel, second: UILabel, at index: Int) {
+        let label = createPossibleAnswerLabel(text: second.text, position: second.frame)
+        contentView.addSubview(label)
+        
+        possibleAnswersLabels.insert(label, at: index)
+        
+        second.text = first.text
+    }
+    
+    private func animateLayoutChanges() {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.validateLayout()
+            self?.validatePossibleAnswersLayout()
+            self?.invalidateIntrinsicContentSize()
+            self?.layoutIfNeeded()
+        }
+    }
+    
+    private func checkAnswers() {
         for (index, label) in answersLabels.enumerated() {
             let text = label.text
             
@@ -219,6 +240,16 @@ private extension DragTextCollectionViewCell {
                 label.backgroundColor = .red
             }
         }
+    }
+}
+
+//MARK: Target function
+
+private extension DragTextCollectionViewCell {
+    
+    @objc private func didTapCheckBtn(_ sender: UIButton) {
+        sender.animateScale(with: 0.95)
+        checkAnswers()
     }
     
 }
@@ -235,7 +266,7 @@ extension DragTextCollectionViewCell: UIDragInteractionDelegate {
         dragItem.localObject = view
         return [dragItem]
     }
-        
+    
 }
 
 //MARK: DropDelegate
@@ -243,12 +274,13 @@ extension DragTextCollectionViewCell: UIDragInteractionDelegate {
 extension DragTextCollectionViewCell: UIDropInteractionDelegate {
     
     func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
+        //prevent drop from other cells
         if let label = session.items.first?.localObject as? UILabel {
             if possibleAnswersLabels.contains(label) { return UIDropProposal(operation: .copy) }
         }
         return UIDropProposal(operation: .forbidden)
     }
-        
+    
     func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
         guard let draggedLabel = session.items.first?.localObject as? UILabel else { return}
         let touchCoordinate = session.location(in: contentView)
@@ -267,26 +299,7 @@ extension DragTextCollectionViewCell: UIDropInteractionDelegate {
             possibleAnswersLabels.remove(at: draggedLabel).removeFromSuperview()
         }
         
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            //It just works
-            self?.validateLayout()
-            self?.validateLayout()
-            
-            self?.validatePossibleAnswersLayout()
-            self?.validatePossibleAnswersLayout()
-            
-            self?.invalidateIntrinsicContentSize()
-            self?.layoutIfNeeded()
-        }
-    }
-    
-    private func swapLabels(first: UILabel, second: UILabel, at index: Int) {
-        let label = createPossibleAnswerLabel(text: second.text, position: second.frame)
-        contentView.addSubview(label)
-        
-        possibleAnswersLabels.insert(label, at: index)
-        
-        second.text = first.text
+        animateLayoutChanges()
     }
     
 }
@@ -301,7 +314,7 @@ private extension DragTextCollectionViewCell {
             checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15).withPriority(999),
             checkBtn.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             checkBtn.heightAnchor.constraint(equalToConstant: 30),
-            checkBtn.widthAnchor.constraint(equalToConstant: 100),
+            checkBtn.widthAnchor.constraint(equalToConstant: 120),
         ])
     }
     

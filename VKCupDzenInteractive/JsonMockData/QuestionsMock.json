@@ -30,7 +30,7 @@
             "rightAnswerIndex": 1,
             "answers": [
                 {
-                    "answerName": "первый",
+                    "answerName": "Большой ответ Большой ответ Большой ответ Большой ответ Большой ответ",
                     "percent": 90
                 },
                 {
@@ -45,15 +45,15 @@
             "rightAnswerIndex": 0,
             "answers": [
                 {
-                    "answerName": "первый",
+                    "answerName": "Большой ответ Большой ответ Большой ответ Большой ответ Большой ответ",
                     "percent": 50
                 },
                 {
-                    "answerName": "второй",
+                    "answerName": "Большой ответ Большой ответ Большой ответ Большой ответ Большой ответ",
                     "percent": 40
                 },
                 {
-                    "answerName": "третий",
+                    "answerName": "Большой ответ Большой ответ Большой ответ Большой ответ Большой ответ",
                     "percent": 10
                 }
             ]
@@ -87,19 +87,27 @@
             "rightAnswerIndex": 1,
             "answers": [
                 {
-                    "answerName": "первый",
+                    "answerName": "TestTest TestTest TestTes tTestTest Test",
                     "percent": 70
                 },
                 {
-                    "answerName": "второй",
+                    "answerName": "TestTestTestTestTest",
                     "percent": 30
                 },
                 {
-                    "answerName": "третий",
+                    "answerName": "TestTest TestTestTestTest TestTestTest TestTestTest",
                     "percent": 0
                 },
                 {
-                    "answerName": "четвертый",
+                    "answerName": "Test TestTestTest TestTestTest TestTestTestTest TestTestTestTest TestTest",
+                    "percent": 0
+                },
+                {
+                    "answerName": "TestTest",
+                    "percent": 0
+                },
+                {
+                    "answerName": "TestTestTestTest",
                     "percent": 0
                 }
             ]

@@ -45,13 +45,8 @@ final class QuestionCollectioViewCell: UICollectionViewCell {
         return label
     }()
     
-    lazy var resetBtn: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Reset", for: .normal)
-        btn.setTitleColor(.systemBackground, for: .normal)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.backgroundColor = .label
-        btn.layer.cornerRadius = 15
+    lazy var resetBtn: MainButton = {
+        let btn = MainButton(title: "Сбросить")
         btn.addTarget(self, action: #selector(didTapResetBtn(_:)), for: .touchUpInside)
         return btn
     }()
@@ -99,24 +94,19 @@ final class QuestionCollectioViewCell: UICollectionViewCell {
             
             let gesutre = UITapGestureRecognizer(target: self, action: #selector(didTapQuestion(_:)))
             questionView.addGestureRecognizer(gesutre)
-            
-            questionView.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                questionView.heightAnchor.constraint(equalToConstant: 60)
-            ])
-            
+                        
             stackViewContent.addArrangedSubview(questionView)
         }
     }
     
     //MARK: Questions logic
-        
+    
     private func setAnswerFocus(answer: QuestionView, isRightAnswer: Bool) {
         isRightAnswer ? answer.animateScale(with: 1.2) : answer.animateWrongAnswer()
         
         answer.rightMark.isHidden = false
         answer.questionPercent.isHidden = false
+        answer.stackView.isHidden = false
         answer.isUserInteractionEnabled = false
         
         let image = createAnswerImage(isRightAnswer: isRightAnswer)
@@ -129,6 +119,7 @@ final class QuestionCollectioViewCell: UICollectionViewCell {
         let otherQuestions = stackViewContent.arrangedSubviews.filter { $0.isKind(of: QuestionView.self) && $0 != tappedAnswer && $0 != rightAnswer }
         otherQuestions.forEach {
             let question = $0 as! QuestionView
+            question.stackView.isHidden = false
             question.questionPercent.isHidden = false
             question.isUserInteractionEnabled = false
             UIView.animate(withDuration: 0.2) {
@@ -142,7 +133,27 @@ final class QuestionCollectioViewCell: UICollectionViewCell {
         let rightAnsmwerImage = UIImage(systemName: systemName)?.withTintColor(.white, renderingMode: .alwaysOriginal)
         return rightAnsmwerImage!
     }
-
+    
+    private func resetQuestions() {
+        let questions = stackViewContent.arrangedSubviews.filter( {$0.isKind(of: QuestionView.self) })
+        questions.forEach {
+            let question = $0 as! QuestionView
+            question.questionPercent.isHidden = true
+            question.rightMark.isHidden = true
+            question.stackView.isHidden = true
+            question.isUserInteractionEnabled = true
+            question.backgroundColor = .orange
+            question.alpha = 1
+        }
+    }
+    
+    private func animateLayoutChanges() {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.invalidateIntrinsicContentSize()
+            self?.layoutIfNeeded()
+        }
+    }
+    
 }
 
 //MARK: Target function
@@ -164,20 +175,14 @@ private extension QuestionCollectioViewCell {
         }
         
         setOtherAnswers(tappedAnswer: tappedQuestion, rightAnswer: rightAnswer)
+        
+        animateLayoutChanges()
     }
     
     @objc func didTapResetBtn(_ sender: UIButton) {
         sender.animateScale(with: 0.95)
-        
-        let questions = stackViewContent.arrangedSubviews.filter( {$0.isKind(of: QuestionView.self) })
-        questions.forEach {
-            let question = $0 as! QuestionView
-            question.questionPercent.isHidden = true
-            question.rightMark.isHidden = true
-            question.isUserInteractionEnabled = true
-            question.backgroundColor = .orange
-            question.alpha = 1
-        }
+        resetQuestions()
+        animateLayoutChanges()
     }
 }
 
@@ -190,7 +195,9 @@ private extension QuestionCollectioViewCell {
             stackViewContent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             stackViewContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
             stackViewContent.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
-            stackViewContent.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
+            stackViewContent.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+            
+            resetBtn.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
     

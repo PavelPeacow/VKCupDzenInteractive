@@ -9,8 +9,8 @@ import UIKit
 
 final class QuestionListViewController: UIViewController {
     
-    var questions = [Question]()
-    var count: Int = 0
+    private var questions = [Question]()
+    private var count: Int = 0
     
     lazy var collections: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout(section: .createMainSection())

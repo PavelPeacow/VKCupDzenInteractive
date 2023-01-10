@@ -9,7 +9,7 @@ import UIKit
 
 final class DragTextViewController: UIViewController {
     
-    var fillInQuestions = [FillInQuestion]()
+    private var fillInQuestions = [FillInQuestion]()
     
     lazy var collection: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout(section: .createFillInTextSection())

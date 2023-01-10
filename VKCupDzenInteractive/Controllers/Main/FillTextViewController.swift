@@ -9,7 +9,7 @@ import UIKit
 
 final class FillTextViewController: UIViewController {
     
-    var fillInQuestions = [FillInQuestion]()
+    private var fillInQuestions = [FillInQuestion]()
     
     lazy var collection: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout(section: .createFillInTextSection())
@@ -45,7 +45,7 @@ final class FillTextViewController: UIViewController {
             return
         }
 
-        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height + 100, right: 0)
         collection.contentInset = contentInsets
         collection.scrollIndicatorInsets = contentInsets
     }

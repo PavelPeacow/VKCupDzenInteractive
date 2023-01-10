@@ -11,15 +11,15 @@ final class CompareViewController: UIViewController {
     
     //MARK: Properties
     
-    var right = ["один", "два", "три", "четыре"]
-    var left = ["1", "2", "3", "4"]
+    private var right = ["один", "два", "три", "четыре"]
+    private var left = ["1", "2", "3", "4"]
     
-    var answers = [UILabel:UILabel]()
+    private var answers = [UILabel:UILabel]()
     
-    var rightAnswers: Dictionary<String,String> = ["1":"один", "2":"два", "3":"три", "4":"четыре"]
+    private var rightAnswers: Dictionary<String,String> = ["1":"один", "2":"два", "3":"три", "4":"четыре"]
     
-    var lineShape = CAShapeLayer()
-    var combinedPath = CGMutablePath()
+    private var lineShape = CAShapeLayer()
+    private var combinedPath = CGMutablePath()
     
     //MARK: View
     
@@ -53,28 +53,18 @@ final class CompareViewController: UIViewController {
         return stackView
     }()
     
-    lazy var checkBtn: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Check", for: .normal)
-        btn.setTitleColor(.systemBackground, for: .normal)
-        btn.backgroundColor = .label
-        btn.layer.cornerRadius = 15
-        btn.translatesAutoresizingMaskIntoConstraints = false
+    lazy var checkBtn: MainButton = {
+        let btn = MainButton(title: "Проверить")
         btn.addTarget(self, action: #selector(didTapCheckBtn(_:)), for: .touchUpInside)
         return btn
     }()
     
-    lazy var resetBtn: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Reset", for: .normal)
-        btn.setTitleColor(.systemBackground, for: .normal)
-        btn.backgroundColor = .label
-        btn.layer.cornerRadius = 15
-        btn.translatesAutoresizingMaskIntoConstraints = false
+    lazy var resetBtn: MainButton = {
+        let btn = MainButton(title: "Сбросить")
         btn.addTarget(self, action: #selector(didTapResetBtn(_:)), for: .touchUpInside)
         return btn
     }()
-        
+    
     //MARK: Lifecycle
     
     override func viewDidLoad() {
@@ -109,11 +99,10 @@ final class CompareViewController: UIViewController {
         }
     }
     
-    private func createPossibleAnswerLabel(text: String?, position: CGRect = .zero) -> UILabel {
+    private func createPossibleAnswerLabel(text: String?) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = true
-        label.frame = position
         label.clipsToBounds = true
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
@@ -233,7 +222,7 @@ final class CompareViewController: UIViewController {
 
 //MARK: Target function
 
-extension CompareViewController {
+private extension CompareViewController {
     
     @objc func didTapCheckBtn(_ sender: UIButton) {
         sender.animateScale(with: 0.95)
@@ -273,7 +262,7 @@ extension CompareViewController {
 
 //MARK: Constraints
 
-extension CompareViewController {
+private extension CompareViewController {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
