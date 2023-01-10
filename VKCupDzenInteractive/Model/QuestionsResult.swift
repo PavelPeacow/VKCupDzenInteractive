@@ -5,8 +5,6 @@
 //  Created by Павел Кай on 06.01.2023.
 //
 
-import Foundation
-
 struct QuestionsResult: Decodable {
     let questionCount: Int
     let items: [Question]

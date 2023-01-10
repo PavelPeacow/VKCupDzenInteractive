@@ -16,6 +16,7 @@ enum DecoderError: Error {
 enum JsonFileUrl {
     case questions
     case fillInQuestions
+    case compare
     
     var type: URL? {
         switch self {
@@ -23,6 +24,8 @@ enum JsonFileUrl {
             return Bundle.main.url(forResource: "QuestionsMock", withExtension: "json")
         case .fillInQuestions:
             return Bundle.main.url(forResource: "FillInQuestionsMock", withExtension: "json")
+        case .compare:
+            return Bundle.main.url(forResource: "CompareMock", withExtension: "json")
         }
     }
     

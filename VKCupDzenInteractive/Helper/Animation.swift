@@ -25,6 +25,18 @@ extension UIView {
         self.layer.add(animation, forKey: "shake")
     }
     
+    func createStrokeAnimation(in lineShape: CAShapeLayer) {
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0.0
+        animation.toValue = 1.0
+        animation.duration = 0.5
+        animation.fillMode = CAMediaTimingFillMode.forwards
+        animation.isRemovedOnCompletion = false
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        self.layer.addSublayer(lineShape)
+        lineShape.add(animation, forKey: nil)
+    }
+    
 }
 
 

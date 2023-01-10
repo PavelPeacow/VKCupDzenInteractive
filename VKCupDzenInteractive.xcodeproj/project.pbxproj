@@ -16,6 +16,9 @@
 		B50DF96E2969A9A700715CC8 /* DragTextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF96D2969A9A700715CC8 /* DragTextCollectionViewCell.swift */; };
 		B50DF970296AE85400715CC8 /* CompareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF96F296AE85400715CC8 /* CompareViewController.swift */; };
 		B50DF972296C722B00715CC8 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF971296C722B00715CC8 /* MainButton.swift */; };
+		B50DF977296D664A00715CC8 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF976296D664A00715CC8 /* LabelWithPadding.swift */; };
+		B50DF979296D685500715CC8 /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF978296D685500715CC8 /* Compare.swift */; };
+		B50DF97B296D68F900715CC8 /* CompareMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B50DF97A296D68F900715CC8 /* CompareMock.json */; };
 		B597025C2966D3D100F7E07F /* StarRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025B2966D3D100F7E07F /* StarRatingViewController.swift */; };
 		B597025F29671BD300F7E07F /* FillTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025E29671BD300F7E07F /* FillTextViewController.swift */; };
 		B59A3F9829681E66001DEE09 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59A3F9729681E66001DEE09 /* Animation.swift */; };
@@ -42,6 +45,9 @@
 		B50DF96D2969A9A700715CC8 /* DragTextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragTextCollectionViewCell.swift; sourceTree = "<group>"; };
 		B50DF96F296AE85400715CC8 /* CompareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareViewController.swift; sourceTree = "<group>"; };
 		B50DF971296C722B00715CC8 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
+		B50DF976296D664A00715CC8 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
+		B50DF978296D685500715CC8 /* Compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compare.swift; sourceTree = "<group>"; };
+		B50DF97A296D68F900715CC8 /* CompareMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CompareMock.json; sourceTree = "<group>"; };
 		B597025B2966D3D100F7E07F /* StarRatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingViewController.swift; sourceTree = "<group>"; };
 		B597025E29671BD300F7E07F /* FillTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillTextViewController.swift; sourceTree = "<group>"; };
 		B59A3F9729681E66001DEE09 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
@@ -74,6 +80,7 @@
 		B50DF9642969730A00715CC8 /* JsonMockData */ = {
 			isa = PBXGroup;
 			children = (
+				B50DF97A296D68F900715CC8 /* CompareMock.json */,
 				B50DF9602969671000715CC8 /* QuestionsMock.json */,
 				B50DF965296989F000715CC8 /* FillInQuestionsMock.json */,
 				B50DF9622969677800715CC8 /* JsonDecoder.swift */,
@@ -84,6 +91,7 @@
 		B50DF973296C722F00715CC8 /* Subclass */ = {
 			isa = PBXGroup;
 			children = (
+				B50DF976296D664A00715CC8 /* LabelWithPadding.swift */,
 				B50DF971296C722B00715CC8 /* MainButton.swift */,
 			);
 			path = Subclass;
@@ -125,6 +133,7 @@
 			children = (
 				B59A3FA529686B57001DEE09 /* QuestionsResult.swift */,
 				B50DF96729698C7500715CC8 /* FillInQuestion.swift */,
+				B50DF978296D685500715CC8 /* Compare.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -260,6 +269,7 @@
 				B5C9A6BA29656434007DAB05 /* LaunchScreen.storyboard in Resources */,
 				B5C9A6B729656434007DAB05 /* Assets.xcassets in Resources */,
 				B50DF966296989F000715CC8 /* FillInQuestionsMock.json in Resources */,
+				B50DF97B296D68F900715CC8 /* CompareMock.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B50DF979296D685500715CC8 /* Compare.swift in Sources */,
 				B50DF96E2969A9A700715CC8 /* DragTextCollectionViewCell.swift in Sources */,
 				B50DF9632969677800715CC8 /* JsonDecoder.swift in Sources */,
 				B59A3FA629686B57001DEE09 /* QuestionsResult.swift in Sources */,
@@ -282,6 +293,7 @@
 				B5C9A6AE29656433007DAB05 /* AppDelegate.swift in Sources */,
 				B59A3F9829681E66001DEE09 /* Animation.swift in Sources */,
 				B50DF96829698C7500715CC8 /* FillInQuestion.swift in Sources */,
+				B50DF977296D664A00715CC8 /* LabelWithPadding.swift in Sources */,
 				B597025F29671BD300F7E07F /* FillTextViewController.swift in Sources */,
 				B59A3F9B2968252F001DEE09 /* QuestionCollectioViewCell.swift in Sources */,
 				B50DF972296C722B00715CC8 /* MainButton.swift in Sources */,
@@ -434,6 +446,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -464,6 +477,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

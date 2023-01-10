@@ -80,7 +80,9 @@ extension QuestionView {
             stackViewMain.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             stackViewMain.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
             
-            stackView.widthAnchor.constraint(equalToConstant: 60),
+            stackView.widthAnchor.constraint(equalToConstant: 85),
+            rightMark.heightAnchor.constraint(equalToConstant: 20),
+            rightMark.widthAnchor.constraint(equalToConstant: 20),
         ])
     }
 }

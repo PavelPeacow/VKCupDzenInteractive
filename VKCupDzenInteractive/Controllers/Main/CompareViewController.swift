@@ -11,17 +11,25 @@ final class CompareViewController: UIViewController {
     
     //MARK: Properties
     
-    private var right = ["один", "два", "три", "четыре"]
-    private var left = ["1", "2", "3", "4"]
+    private var right = [String]()
+    private var left = [String]()
     
     private var answers = [UILabel:UILabel]()
     
-    private var rightAnswers: Dictionary<String,String> = ["1":"один", "2":"два", "3":"три", "4":"четыре"]
+    private var rightAnswers = [String:String]()
     
     private var lineShape = CAShapeLayer()
     private var combinedPath = CGMutablePath()
     
     //MARK: View
+    
+    lazy var background: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemGray6
+        view.layer.cornerRadius = 15
+        return view
+    }()
     
     lazy var leftStackView: UIStackView = {
         let stackView = UIStackView()
@@ -70,11 +78,14 @@ final class CompareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        getMockData()
+        
         view.backgroundColor = .systemBackground
         view.layer.addSublayer(lineShape)
-        view.addSubview(leftStackView)
-        view.addSubview(rightStackView)
-        view.addSubview(btnsStackView)
+        view.addSubview(background)
+        background.addSubview(leftStackView)
+        background.addSubview(rightStackView)
+        background.addSubview(btnsStackView)
         
         setLeftStackViewContent()
         setRightStackViewContent()
@@ -100,7 +111,8 @@ final class CompareViewController: UIViewController {
     }
     
     private func createPossibleAnswerLabel(text: String?) -> UILabel {
-        let label = UILabel()
+        let padding = UIEdgeInsets(top: 3, left: 5, bottom: 3, right: 5)
+        let label = PaddedLabel(with: padding)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = true
         label.clipsToBounds = true
@@ -128,6 +140,8 @@ final class CompareViewController: UIViewController {
         let linePath = UIBezierPath()
         
         switch gesture.state {
+        case .began:
+            createTapticFeedback(with: .medium)
 
         case .changed:
             
@@ -145,14 +159,16 @@ final class CompareViewController: UIViewController {
                 if isLabelHasLine(label: secondLabel, secondLabel: tappedView) { return }
                 if isAtSameStackView(firstView: tappedView, secondView: secondLabel) { return }
                 
+                createTapticFeedback(with: .heavy)
+                
                 addAnswer(firstLabel: tappedView, secondLabel: secondLabel)
                 
                 addLine(startPoint: startPoint, endPoint: secondPoint)
-                createAnimation()
+                view.createStrokeAnimation(in: lineShape)
                 return
             }
             
-            createAnimation()
+            view.createStrokeAnimation(in: lineShape)
             lineShape.path = combinedPath
             
         default: break
@@ -182,19 +198,7 @@ final class CompareViewController: UIViewController {
         }
         return false
     }
-    
-    private func createAnimation() {
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.fromValue = 0.0
-        animation.toValue = 1.0
-        animation.duration = 0.5
-        animation.fillMode = CAMediaTimingFillMode.forwards
-        animation.isRemovedOnCompletion = false
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-        view.layer.addSublayer(lineShape)
-        lineShape.add(animation, forKey: nil)
-    }
-    
+        
     private func addLine(startPoint: CGPoint, endPoint: CGPoint) {
         let linePath = UIBezierPath()
         linePath.move(to: startPoint)
@@ -217,6 +221,24 @@ final class CompareViewController: UIViewController {
         }
         return false
     }
+    
+    //MARK: Answers set
+    
+    private func setRightAnswer(key: UILabel, value: UILabel) {
+        key.backgroundColor = .green
+        key.animateScale(with: 1.2)
+        
+        value.backgroundColor = .green
+        value.animateScale(with: 1.2)
+    }
+    
+    private func setWrongAnswer(key: UILabel, value: UILabel) {
+        key.backgroundColor = .red
+        key.animateWrongAnswer()
+        
+        value.backgroundColor = .red
+        value.animateWrongAnswer()
+    }
         
 }
 
@@ -226,28 +248,23 @@ private extension CompareViewController {
     
     @objc func didTapCheckBtn(_ sender: UIButton) {
         sender.animateScale(with: 0.95)
+        createTapticFeedback(with: .medium)
         
         for (key, value) in answers {
             guard let keyText = key.text else { return }
             
             if rightAnswers[keyText] == value.text {
-                key.backgroundColor = .orange
-                key.animateScale(with: 1.2)
-                
-                value.backgroundColor = .orange
-                value.animateScale(with: 1.2)
+                setRightAnswer(key: key, value: value)
             } else {
-                key.backgroundColor = .red
-                key.animateWrongAnswer()
-                
-                value.backgroundColor = .red
-                value.animateWrongAnswer()
+                setWrongAnswer(key: key, value: value)
             }
         }
     }
     
     @objc func didTapResetBtn(_ sender: UIButton) {
         sender.animateScale(with: 0.95)
+        createTapticFeedback(with: .medium)
+        
         lineShape.path = nil
         combinedPath = CGMutablePath()
         
@@ -260,21 +277,43 @@ private extension CompareViewController {
     
 }
 
+//MARK: JsonMockData
+
+extension CompareViewController {
+    
+    private func getMockData() {
+        do {
+            let result = try JsonMockDecoder().getMockData(with: .compare, type: Compare.self)
+            left = result.leftColumn
+            right = result.rightColumn
+            rightAnswers = result.rightAnswers
+        } catch {
+            print(error)
+        }
+    }
+    
+}
+
 //MARK: Constraints
 
 private extension CompareViewController {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            leftStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            leftStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            background.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+            background.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+            background.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
+            background.bottomAnchor.constraint(equalTo: btnsStackView.bottomAnchor, constant: 5),
             
-            rightStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            rightStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            leftStackView.topAnchor.constraint(equalTo: background.topAnchor, constant: 10),
+            leftStackView.leadingAnchor.constraint(equalTo: background.leadingAnchor, constant: 5),
+            
+            rightStackView.topAnchor.constraint(equalTo: background.topAnchor, constant: 10),
+            rightStackView.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -5),
             
             btnsStackView.topAnchor.constraint(equalTo: leftStackView.bottomAnchor, constant: 15),
-            btnsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            btnsStackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            btnsStackView.centerXAnchor.constraint(equalTo: background.centerXAnchor),
+            btnsStackView.widthAnchor.constraint(equalTo: background.widthAnchor, multiplier: 0.8),
         ])
     }
     

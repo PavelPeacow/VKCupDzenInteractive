@@ -108,7 +108,7 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
                 x = previousLabel.frame.maxX
             }
             
-            if x + label.frame.width > contentView.bounds.width - 10 {
+            if x + label.frame.width > contentView.bounds.width - 15 {
                 x = 10
                 y += 30
             }
@@ -225,10 +225,9 @@ private extension FillInTextCollectionViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            checkBtn.topAnchor.constraint(equalTo: labels.last!.bottomAnchor, constant: 15).withPriority(999),
-            checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15).withPriority(999),
+            contentView.bottomAnchor.constraint(equalTo: checkBtn.bottomAnchor, constant: 15),
+            checkBtn.topAnchor.constraint(equalTo: labels.last!.bottomAnchor, constant: 15),
             checkBtn.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            checkBtn.heightAnchor.constraint(equalToConstant: 30),
             checkBtn.widthAnchor.constraint(equalToConstant: 120),
         ])
     }

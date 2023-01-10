@@ -103,7 +103,7 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
                 x = previousLabel.frame.maxX
             }
             
-            if x + label.frame.width > contentView.bounds.width - 10 {
+            if x + label.frame.width > contentView.bounds.width - 15 {
                 x = 10
                 y += 30
             }
@@ -136,7 +136,7 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
     private func validatePossibleAnswersLayout() {
         let spacing: CGFloat = 10
         
-        var x: CGFloat = 30
+        var x: CGFloat = 15
         var y: CGFloat = labels.last!.frame.maxY + 30
         var previousLabel: UILabel?
         
@@ -154,8 +154,8 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
                 x = previousLabel.frame.maxX
             }
             
-            if x + label.frame.width > contentView.bounds.width - 30 {
-                x = 30
+            if x + label.frame.width > contentView.bounds.width - 45 {
+                x = 15
                 y += 30
             }
             
@@ -264,6 +264,7 @@ extension DragTextCollectionViewCell: UIDragInteractionDelegate {
         let itemProvider = NSItemProvider(object: item as NSString)
         let dragItem = UIDragItem(itemProvider: itemProvider)
         dragItem.localObject = view
+        createTapticFeedback(with: .medium)
         return [dragItem]
     }
     
@@ -275,6 +276,7 @@ extension DragTextCollectionViewCell: UIDropInteractionDelegate {
     
     func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
         //prevent drop from other cells
+        //on ios 13.0 drag and drop doesn't work
         if let label = session.items.first?.localObject as? UILabel {
             if possibleAnswersLabels.contains(label) { return UIDropProposal(operation: .copy) }
         }
@@ -286,6 +288,8 @@ extension DragTextCollectionViewCell: UIDropInteractionDelegate {
         let touchCoordinate = session.location(in: contentView)
         guard let destinationLabel = contentView.hitTest(touchCoordinate, with: nil) as? UILabel else { return }
         guard let draggedLabelIndex = possibleAnswersLabels.firstIndex(of: draggedLabel) else { return }
+        
+        createTapticFeedback(with: .medium)
         
         if destinationLabel.text == "___" {
             destinationLabel.text = draggedLabel.text
