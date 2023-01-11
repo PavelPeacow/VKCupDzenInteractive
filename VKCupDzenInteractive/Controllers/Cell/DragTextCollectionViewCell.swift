@@ -76,6 +76,11 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
                 answersLabels.append(label)
             }
             
+            //set basic frames
+            let width = label.intrinsicContentSize.width
+            let height = label.intrinsicContentSize.height
+            label.frame = CGRect(x: 0, y: 0, width: width, height: height)
+            
             labels.append(label)
             contentView.addSubview(label)
         }
@@ -88,15 +93,7 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
         var x: CGFloat = 10
         var y: CGFloat = 10
         var previousLabel: UIView?
-        
-        //set basic frames
-        for label in labels {
-            let width = label.intrinsicContentSize.width
-            let height = label.intrinsicContentSize.height
-            
-            label.frame = CGRect(x: x + spacing, y: y, width: width, height: height)
-        }
-        
+
         for label in labels {
             
             if let previousLabel = previousLabel {
@@ -127,6 +124,12 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
     private func setPossibleAnswersText() {
         for text in possibleAnswers {
             let label = createPossibleAnswerLabel(text: text)
+            
+            //set basic frames
+            let width = label.intrinsicContentSize.width
+            let height = label.intrinsicContentSize.height
+            label.frame = CGRect(x: 0, y: 0, width: width, height: height)
+            
             possibleAnswersLabels.append(label)
             contentView.addSubview(label)
         }
@@ -139,14 +142,6 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
         var x: CGFloat = 15
         var y: CGFloat = labels.last!.frame.maxY + 30
         var previousLabel: UILabel?
-        
-        //set basic frames
-        for label in possibleAnswersLabels {
-            let width = label.intrinsicContentSize.width
-            let height = label.intrinsicContentSize.height
-            
-            label.frame = CGRect(x: x + spacing, y: y, width: width, height: height)
-        }
         
         for label in possibleAnswersLabels {
             
@@ -276,7 +271,6 @@ extension DragTextCollectionViewCell: UIDropInteractionDelegate {
     
     func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
         //prevent drop from other cells
-        //on ios 13.0 drag and drop doesn't work
         if let label = session.items.first?.localObject as? UILabel {
             if possibleAnswersLabels.contains(label) { return UIDropProposal(operation: .copy) }
         }
@@ -303,6 +297,8 @@ extension DragTextCollectionViewCell: UIDropInteractionDelegate {
             possibleAnswersLabels.remove(at: draggedLabel).removeFromSuperview()
         }
         
+        //update constraint
+        checkBtn.topAnchor.constraint(equalTo: possibleAnswersLabels.last!.bottomAnchor, constant: 15).isActive = true
         animateLayoutChanges()
     }
     
@@ -314,10 +310,9 @@ private extension DragTextCollectionViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            checkBtn.topAnchor.constraint(equalTo: possibleAnswersLabels.last!.bottomAnchor, constant: 15).withPriority(999),
-            checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15).withPriority(999),
+            checkBtn.topAnchor.constraint(equalTo: possibleAnswersLabels.last!.bottomAnchor, constant: 15),
+            checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
             checkBtn.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            checkBtn.heightAnchor.constraint(equalToConstant: 30),
             checkBtn.widthAnchor.constraint(equalToConstant: 120),
         ])
     }

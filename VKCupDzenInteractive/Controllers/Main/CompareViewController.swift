@@ -81,8 +81,9 @@ final class CompareViewController: UIViewController {
         getMockData()
         
         view.backgroundColor = .systemBackground
-        view.layer.addSublayer(lineShape)
+        
         view.addSubview(background)
+        view.layer.addSublayer(lineShape)
         background.addSubview(leftStackView)
         background.addSubview(rightStackView)
         background.addSubview(btnsStackView)
@@ -121,7 +122,7 @@ final class CompareViewController: UIViewController {
         label.addGestureRecognizer(panGesture)
         
         label.text = text
-        label.font = .systemFont(ofSize: 22)
+        label.font = .systemFont(ofSize: 25)
         label.layer.borderColor = UIColor.orange.cgColor
         label.layer.cornerRadius = 10
         label.layer.borderWidth = 1
@@ -300,16 +301,16 @@ private extension CompareViewController {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            background.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+            background.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             background.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
             background.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
-            background.bottomAnchor.constraint(equalTo: btnsStackView.bottomAnchor, constant: 5),
+            background.bottomAnchor.constraint(equalTo: btnsStackView.bottomAnchor, constant: 15),
             
             leftStackView.topAnchor.constraint(equalTo: background.topAnchor, constant: 10),
-            leftStackView.leadingAnchor.constraint(equalTo: background.leadingAnchor, constant: 5),
+            leftStackView.leadingAnchor.constraint(equalTo: background.leadingAnchor, constant: 15),
             
             rightStackView.topAnchor.constraint(equalTo: background.topAnchor, constant: 10),
-            rightStackView.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -5),
+            rightStackView.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -15),
             
             btnsStackView.topAnchor.constraint(equalTo: leftStackView.bottomAnchor, constant: 15),
             btnsStackView.centerXAnchor.constraint(equalTo: background.centerXAnchor),

@@ -9,10 +9,10 @@ import UIKit
 
 final class DragTextViewController: UIViewController {
     
-    private var fillInQuestions = [FillInQuestion]()
+    private var dragInQuestions = [FillInQuestion]()
     
     lazy var collection: UICollectionView = {
-        let layout = UICollectionViewCompositionalLayout(section: .createFillInTextSection())
+        let layout = UICollectionViewCompositionalLayout(section: .createDragInTextSection())
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(DragTextCollectionViewCell.self, forCellWithReuseIdentifier: DragTextCollectionViewCell.identifier)
@@ -41,7 +41,7 @@ private extension DragTextViewController {
     func getMockData() {
         do {
             let result = try JsonMockDecoder().getMockData(with: .fillInQuestions, type: [FillInQuestion].self)
-            fillInQuestions = result
+            dragInQuestions = result
         } catch {
             print(error)
         }
@@ -52,13 +52,13 @@ private extension DragTextViewController {
 extension DragTextViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        fillInQuestions.count
+        dragInQuestions.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DragTextCollectionViewCell.identifier, for: indexPath) as! DragTextCollectionViewCell
         
-        cell.configure(fillInQuestion: fillInQuestions[indexPath.item])
+        cell.configure(fillInQuestion: dragInQuestions[indexPath.item])
         
         return cell
     }

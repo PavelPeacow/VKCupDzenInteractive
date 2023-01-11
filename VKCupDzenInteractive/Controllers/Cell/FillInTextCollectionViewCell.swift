@@ -81,10 +81,18 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
             } else {
                 element = createLabel(text: text)
             }
+            
+            //set basic frames
+            let width = element.intrinsicContentSize.width
+            let height = element.intrinsicContentSize.height
+            element.frame = CGRect(x: 0, y: 0, width: width, height: height)
+            
             labels.append(element)
             contentView.addSubview(element)
         }
         validateLayout()
+        
+       
     }
     
     private func validateLayout() {
@@ -93,15 +101,7 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
         var x: CGFloat = 10
         var y: CGFloat = 10
         var previousLabel: UIView?
-        
-        //set basic frames
-        for label in labels {
-            let width = label.intrinsicContentSize.width
-            let height = label.intrinsicContentSize.height
-            
-            label.frame = CGRect(x: x + spacing, y: y, width: width, height: height)
-        }
-        
+
         for label in labels {
             
             if let previousLabel = previousLabel {
@@ -217,6 +217,15 @@ extension FillInTextCollectionViewCell: UITextFieldDelegate {
         return true
     }
     
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        var maxCount = rightAnswers.max()?.count ?? 0
+        if textField.text == "___" {
+            maxCount = 3
+        } else {
+            textField.text = String(textField.text!.prefix(maxCount))
+        }
+    }
+    
 }
 
 //MARK: Constraints
@@ -225,20 +234,11 @@ private extension FillInTextCollectionViewCell {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            contentView.bottomAnchor.constraint(equalTo: checkBtn.bottomAnchor, constant: 15),
             checkBtn.topAnchor.constraint(equalTo: labels.last!.bottomAnchor, constant: 15),
+            checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
             checkBtn.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             checkBtn.widthAnchor.constraint(equalToConstant: 120),
         ])
     }
     
-}
-
-extension NSLayoutConstraint
-{
-    func withPriority(_ priority: Float) -> NSLayoutConstraint
-    {
-        self.priority = UILayoutPriority(priority)
-        return self
-    }
 }
