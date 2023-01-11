@@ -18,7 +18,22 @@ final class CompareViewController: UIViewController {
     
     private var rightAnswers = [String:String]()
     
-    private var lineShape = CAShapeLayer()
+    private var paths = [UILabel:UIBezierPath]()
+    
+    private var lineShape: CAShapeLayer = {
+        let shape = CAShapeLayer()
+        shape.strokeColor = UIColor.orange.cgColor
+        shape.lineWidth = 2
+        return shape
+    }()
+    
+    private var currentLineShape: CAShapeLayer = {
+        let shape = CAShapeLayer()
+        shape.strokeColor = UIColor.orange.cgColor
+        shape.lineWidth = 2
+        return shape
+    }()
+    
     private var combinedPath = CGMutablePath()
     
     //MARK: View
@@ -84,6 +99,7 @@ final class CompareViewController: UIViewController {
         
         view.addSubview(background)
         view.layer.addSublayer(lineShape)
+        view.layer.addSublayer(currentLineShape)
         background.addSubview(leftStackView)
         background.addSubview(rightStackView)
         background.addSubview(btnsStackView)
@@ -131,27 +147,54 @@ final class CompareViewController: UIViewController {
     }
     
     //MARK: Compare logic
-                
+    
+    private func resetViewWhenTap(tappedView: UILabel) {
+        if let element = answers.first(where: { (key: UILabel, value: UILabel) in
+            key == tappedView || value == tappedView
+        }) {
+            element.key.backgroundColor = .clear
+            element.value.backgroundColor = .clear
+            
+            answers.removeValue(forKey: element.key)
+            paths.removeValue(forKey: element.key)
+        }
+        
+        combinedPath = CGMutablePath()
+        for i in paths {
+            combinedPath.addPath(i.value.cgPath)
+        }
+        
+        lineShape.path = combinedPath
+    }
+    
     @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
         guard let tappedView = gesture.view as? UILabel else { return }
         let currentPanPoint = gesture.location(in: view)
-
+        
         let startPoint = getStartPoint(of: tappedView)
+        
+        if tappedView.backgroundColor == .green { return }
+        
+        if tappedView.backgroundColor != .green {
+            resetViewWhenTap(tappedView: tappedView)
+        }
         
         let linePath = UIBezierPath()
         
         switch gesture.state {
         case .began:
             createTapticFeedback(with: .medium)
-
+            
         case .changed:
             
             linePath.move(to: startPoint)
             linePath.addLine(to: currentPanPoint)
             
-            createStroke(line: linePath)
+            currentLineShape.path = linePath.cgPath
             
         case .ended:
+            currentLineShape.path = nil
+            
             if let secondLabel = view.hitTest(currentPanPoint, with: .none) as? UILabel {
                 let secondPoint = getStartPoint(of: secondLabel)
                 
@@ -164,27 +207,19 @@ final class CompareViewController: UIViewController {
                 
                 addAnswer(firstLabel: tappedView, secondLabel: secondLabel)
                 
-                addLine(startPoint: startPoint, endPoint: secondPoint)
+                addLine(startPoint: startPoint, endPoint: secondPoint, firstLabel: tappedView, secondLabel: secondLabel)
                 view.createStrokeAnimation(in: lineShape)
                 return
             }
-            
-            view.createStrokeAnimation(in: lineShape)
             lineShape.path = combinedPath
             
         default: break
         }
     }
     
-    func createStroke(line: UIBezierPath) {
-        lineShape.path = line.cgPath
-        lineShape.strokeColor = UIColor.orange.cgColor
-        lineShape.lineWidth = 2
-    }
-    
     private func getStartPoint(of view: UIView) -> CGPoint {
         guard let coordinates = view.superview?.convert(view.frame, to: self.view) else { return CGPoint(x: 0, y: 0) }
-
+        
         if leftStackView.arrangedSubviews.contains(view) {
             return CGPoint(x: coordinates.maxX, y: coordinates.midY)
         }
@@ -193,19 +228,29 @@ final class CompareViewController: UIViewController {
     
     private func isAtSameStackView(firstView: UIView, secondView: UIView) -> Bool {
         guard let superview = firstView.superview as? UIStackView else { return true }
-
+        
         if superview.arrangedSubviews.contains(secondView) {
             return true
         }
         return false
     }
-        
-    private func addLine(startPoint: CGPoint, endPoint: CGPoint) {
+    
+    private func addLine(startPoint: CGPoint, endPoint: CGPoint, firstLabel: UILabel, secondLabel: UILabel) {
         let linePath = UIBezierPath()
         linePath.move(to: startPoint)
         linePath.addLine(to: endPoint)
         combinedPath.addPath(linePath.cgPath)
         lineShape.path = combinedPath
+        
+        addPath(path: linePath, firstLabel: firstLabel, secondLabel: secondLabel)
+    }
+    
+    private func addPath(path: UIBezierPath, firstLabel: UILabel, secondLabel: UILabel) {
+        if leftStackView.arrangedSubviews.contains(firstLabel) {
+            paths[firstLabel] = path
+        } else {
+            paths[secondLabel] = path
+        }
     }
     
     private func addAnswer(firstLabel: UILabel, secondLabel: UILabel) {
@@ -240,7 +285,19 @@ final class CompareViewController: UIViewController {
         value.backgroundColor = .red
         value.animateWrongAnswer()
     }
+    
+    private func resetAnswers() {
+        lineShape.path = nil
+        paths.removeAll()
+        combinedPath = CGMutablePath()
         
+        answers.forEach { (key: UILabel, value: UILabel) in
+            key.backgroundColor = .clear
+            value.backgroundColor = .clear
+        }
+        answers.removeAll()
+    }
+    
 }
 
 //MARK: Target function
@@ -265,15 +322,7 @@ private extension CompareViewController {
     @objc func didTapResetBtn(_ sender: UIButton) {
         sender.animateScale(with: 0.95)
         createTapticFeedback(with: .medium)
-        
-        lineShape.path = nil
-        combinedPath = CGMutablePath()
-        
-        answers.forEach { (key: UILabel, value: UILabel) in
-            key.backgroundColor = .clear
-            value.backgroundColor = .clear
-        }
-        answers.removeAll()
+        resetAnswers()
     }
     
 }

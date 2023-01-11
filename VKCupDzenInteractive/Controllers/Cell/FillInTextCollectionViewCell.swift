@@ -81,18 +81,10 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
             } else {
                 element = createLabel(text: text)
             }
-            
-            //set basic frames
-            let width = element.intrinsicContentSize.width
-            let height = element.intrinsicContentSize.height
-            element.frame = CGRect(x: 0, y: 0, width: width, height: height)
-            
             labels.append(element)
             contentView.addSubview(element)
         }
         validateLayout()
-        
-       
     }
     
     private func validateLayout() {
@@ -101,7 +93,15 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
         var x: CGFloat = 10
         var y: CGFloat = 10
         var previousLabel: UIView?
-
+        
+        //set basic frames
+        for label in labels {
+            let width = label.intrinsicContentSize.width
+            let height = label.intrinsicContentSize.height
+            
+            label.frame = CGRect(x: x + spacing, y: y, width: width, height: height)
+        }
+        
         for label in labels {
             
             if let previousLabel = previousLabel {
