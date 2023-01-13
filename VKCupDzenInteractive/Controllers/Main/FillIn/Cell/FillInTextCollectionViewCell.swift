@@ -77,7 +77,7 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
             
             if text == "___" {
                 element = createTextField(text: text)
-                answersLabels.append(element as! UITextField)
+                answersLabels.append(element as! LargeTapAreaTextfield)
             } else {
                 element = createLabel(text: text)
             }
@@ -129,18 +129,22 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
         
     }
     
+    
     private func animateLayoutChanges() {
         UIView.animate(withDuration: 0.25) { [weak self] in
             self?.validateLayout()
-            self?.invalidateIntrinsicContentSize()
             self?.layoutIfNeeded()
         }
+        let collectionView = self.superview as! UICollectionView
+        collectionView.performBatchUpdates({
+            collectionView.layoutIfNeeded()
+        })
     }
     
     //MARK: Create UIElements
     
-    private func createTextField(text: String) -> UITextField {
-        let textField = UITextField()
+    private func createTextField(text: String) -> LargeTapAreaTextfield {
+        let textField = LargeTapAreaTextfield()
         textField.text = text
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
@@ -156,7 +160,7 @@ final class FillInTextCollectionViewCell: UICollectionViewCell {
     
     private func createLabel(text: String) -> UILabel {
         let label = UILabel()
-        label.isUserInteractionEnabled = true
+        label.isUserInteractionEnabled = false
         label.text = text
         label.font = .systemFont(ofSize: 18)
         return label
@@ -235,7 +239,7 @@ private extension FillInTextCollectionViewCell {
     func setConstraints() {
         NSLayoutConstraint.activate([
             checkBtn.topAnchor.constraint(equalTo: labels.last!.bottomAnchor, constant: 15),
-            checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
+            checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15).withPriority(999),
             checkBtn.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             checkBtn.widthAnchor.constraint(equalToConstant: 120),
         ])

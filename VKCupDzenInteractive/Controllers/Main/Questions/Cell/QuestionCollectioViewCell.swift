@@ -7,6 +7,30 @@
 
 import UIKit
 
+private enum AnswerType {
+    case right
+    case wrong
+    
+    var answerImageSystemName: String {
+        switch self {
+        case .right:
+            return "checkmark"
+        case .wrong:
+            return "xmark"
+        }
+    }
+    
+    var answerBackgroundColor: UIColor {
+        switch self {
+        case .right:
+            return .systemGreen
+        case .wrong:
+            return .systemRed
+        }
+    }
+    
+}
+
 final class QuestionCollectioViewCell: UICollectionViewCell {
     
     //MARK: Properties
@@ -101,18 +125,22 @@ final class QuestionCollectioViewCell: UICollectionViewCell {
     
     //MARK: Questions logic
     
-    private func setAnswerFocus(answer: QuestionView, isRightAnswer: Bool) {
-        isRightAnswer ? answer.animateScale(with: 1.2) : answer.animateWrongAnswer()
+    private func setAnswerFocus(answer: QuestionView, answerType: AnswerType) {
+        if answerType == .right {
+            answer.animateScale(with: 1.2)
+        } else {
+            answer.animateWrongAnswer()
+        }
         
         answer.rightMark.isHidden = false
         answer.questionPercent.isHidden = false
         answer.stackView.isHidden = false
         answer.isUserInteractionEnabled = false
         
-        let image = createAnswerImage(isRightAnswer: isRightAnswer)
+        let image = createAnswerImage(answerType: answerType)
         
         answer.rightMark.image = image
-        answer.backgroundColor = isRightAnswer ? .systemGreen : .systemRed
+        answer.backgroundColor = answerType.answerBackgroundColor
     }
     
     private func setOtherAnswers(tappedAnswer: QuestionView, rightAnswer: QuestionView) {
@@ -128,8 +156,8 @@ final class QuestionCollectioViewCell: UICollectionViewCell {
         }
     }
     
-    private func createAnswerImage(isRightAnswer: Bool) -> UIImage {
-        let systemName = isRightAnswer ? "checkmark" : "xmark"
+    private func createAnswerImage(answerType: AnswerType) -> UIImage {
+        let systemName = answerType.answerImageSystemName
         let rightAnsmwerImage = UIImage(systemName: systemName)?.withTintColor(.white, renderingMode: .alwaysOriginal)
         return rightAnsmwerImage!
     }
@@ -149,9 +177,12 @@ final class QuestionCollectioViewCell: UICollectionViewCell {
     
     private func animateLayoutChanges() {
         UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.invalidateIntrinsicContentSize()
             self?.layoutIfNeeded()
         }
+        let collectionView = self.superview as! UICollectionView
+        collectionView.performBatchUpdates({
+            collectionView.layoutIfNeeded()
+        })
     }
     
 }
@@ -168,10 +199,10 @@ private extension QuestionCollectioViewCell {
         let rightAnswer = stackViewContent.arrangedSubviews.filter {$0.isKind(of: QuestionView.self)} [rightQuestionIndex] as! QuestionView
        
         if rightAnswer == tappedQuestion {
-            setAnswerFocus(answer: tappedQuestion, isRightAnswer: true)
+            setAnswerFocus(answer: tappedQuestion, answerType: .right)
         } else {
-            setAnswerFocus(answer: tappedQuestion, isRightAnswer: false)
-            setAnswerFocus(answer: rightAnswer, isRightAnswer: true)
+            setAnswerFocus(answer: tappedQuestion, answerType: .wrong)
+            setAnswerFocus(answer: rightAnswer, answerType: .right)
         }
         
         setOtherAnswers(tappedAnswer: tappedQuestion, rightAnswer: rightAnswer)

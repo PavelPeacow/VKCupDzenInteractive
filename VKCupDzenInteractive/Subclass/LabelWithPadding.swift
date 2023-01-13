@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PaddedLabel: UILabel {
+final class PaddedLabel: UILabel {
     var padding: UIEdgeInsets!
     
     init(with padding: UIEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)) {

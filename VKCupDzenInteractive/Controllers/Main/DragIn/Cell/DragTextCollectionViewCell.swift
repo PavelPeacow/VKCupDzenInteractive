@@ -170,16 +170,17 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
     
     //MARK: Create UIElements
     
-    private func createLabel(text: String) -> UILabel {
-        let label = UILabel()
-        label.isUserInteractionEnabled = true
+    private func createLabel(text: String) -> LargeTapAreaLabel {
+        let label = LargeTapAreaLabel()
+        label.isUserInteractionEnabled = false
         label.text = text
         label.font = .systemFont(ofSize: 18)
         return label
     }
     
-    private func createDropInLabel(text: String) -> UILabel {
+    private func createDropInLabel(text: String) -> LargeTapAreaLabel {
         let label = createLabel(text: text)
+        label.isUserInteractionEnabled = true
         let dropInteraction = UIDropInteraction(delegate: self)
         label.addInteraction(dropInteraction)
         label.backgroundColor = .orange
@@ -189,8 +190,8 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
         return label
     }
     
-    private func createPossibleAnswerLabel(text: String?, position: CGRect = .zero) -> UILabel {
-        let label = UILabel()
+    private func createPossibleAnswerLabel(text: String?, position: CGRect = .zero) -> LargeTapAreaLabel {
+        let label = LargeTapAreaLabel()
         label.isUserInteractionEnabled = true
         label.frame = position
         
@@ -221,9 +222,12 @@ final class DragTextCollectionViewCell: UICollectionViewCell {
         UIView.animate(withDuration: 0.25) { [weak self] in
             self?.validateLayout()
             self?.validatePossibleAnswersLayout()
-            self?.invalidateIntrinsicContentSize()
             self?.layoutIfNeeded()
         }
+        let collectionView = self.superview as! UICollectionView
+        collectionView.performBatchUpdates({
+            collectionView.layoutIfNeeded()
+        })
     }
     
     private func checkAnswers() {
@@ -316,7 +320,7 @@ private extension DragTextCollectionViewCell {
     func setConstraints() {
         NSLayoutConstraint.activate([
             checkBtn.topAnchor.constraint(equalTo: possibleAnswersLabels.last!.bottomAnchor, constant: 15),
-            checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
+            checkBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15).withPriority(999),
             checkBtn.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             checkBtn.widthAnchor.constraint(equalToConstant: 120),
         ])

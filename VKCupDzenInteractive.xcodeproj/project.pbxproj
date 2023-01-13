@@ -19,6 +19,9 @@
 		B50DF977296D664A00715CC8 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF976296D664A00715CC8 /* LabelWithPadding.swift */; };
 		B50DF979296D685500715CC8 /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50DF978296D685500715CC8 /* Compare.swift */; };
 		B50DF97B296D68F900715CC8 /* CompareMock.json in Resources */ = {isa = PBXBuildFile; fileRef = B50DF97A296D68F900715CC8 /* CompareMock.json */; };
+		B5146C7729718C1D0031E027 /* LabelWithBigTapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5146C7629718C1D0031E027 /* LabelWithBigTapArea.swift */; };
+		B5146C7929719DAE0031E027 /* Constraint+Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5146C7829719DAE0031E027 /* Constraint+Priority.swift */; };
+		B5146C7C2971AB810031E027 /* TextFieldWithBigTapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5146C7B2971AB810031E027 /* TextFieldWithBigTapArea.swift */; };
 		B597025C2966D3D100F7E07F /* StarRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025B2966D3D100F7E07F /* StarRatingViewController.swift */; };
 		B597025F29671BD300F7E07F /* FillTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597025E29671BD300F7E07F /* FillTextViewController.swift */; };
 		B59A3F9829681E66001DEE09 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59A3F9729681E66001DEE09 /* Animation.swift */; };
@@ -48,6 +51,9 @@
 		B50DF976296D664A00715CC8 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
 		B50DF978296D685500715CC8 /* Compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compare.swift; sourceTree = "<group>"; };
 		B50DF97A296D68F900715CC8 /* CompareMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CompareMock.json; sourceTree = "<group>"; };
+		B5146C7629718C1D0031E027 /* LabelWithBigTapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithBigTapArea.swift; sourceTree = "<group>"; };
+		B5146C7829719DAE0031E027 /* Constraint+Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constraint+Priority.swift"; sourceTree = "<group>"; };
+		B5146C7B2971AB810031E027 /* TextFieldWithBigTapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithBigTapArea.swift; sourceTree = "<group>"; };
 		B597025B2966D3D100F7E07F /* StarRatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingViewController.swift; sourceTree = "<group>"; };
 		B597025E29671BD300F7E07F /* FillTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillTextViewController.swift; sourceTree = "<group>"; };
 		B59A3F9729681E66001DEE09 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
@@ -93,19 +99,104 @@
 			children = (
 				B50DF976296D664A00715CC8 /* LabelWithPadding.swift */,
 				B50DF971296C722B00715CC8 /* MainButton.swift */,
+				B5146C7629718C1D0031E027 /* LabelWithBigTapArea.swift */,
+				B5146C7B2971AB810031E027 /* TextFieldWithBigTapArea.swift */,
 			);
 			path = Subclass;
+			sourceTree = "<group>";
+		};
+		B50DF98029717F4600715CC8 /* FillIn */ = {
+			isa = PBXGroup;
+			children = (
+				B597025E29671BD300F7E07F /* FillTextViewController.swift */,
+				B50DF98829717F9700715CC8 /* Cell */,
+			);
+			path = FillIn;
+			sourceTree = "<group>";
+		};
+		B50DF98129717F4D00715CC8 /* Star */ = {
+			isa = PBXGroup;
+			children = (
+				B597025B2966D3D100F7E07F /* StarRatingViewController.swift */,
+			);
+			path = Star;
+			sourceTree = "<group>";
+		};
+		B50DF98229717F5200715CC8 /* DragIn */ = {
+			isa = PBXGroup;
+			children = (
+				B5C9A6C4296565B7007DAB05 /* DragTextViewController.swift */,
+				B50DF98729717F8900715CC8 /* Cell */,
+			);
+			path = DragIn;
+			sourceTree = "<group>";
+		};
+		B50DF98329717F5800715CC8 /* Questions */ = {
+			isa = PBXGroup;
+			children = (
+				B59A3FA129686020001DEE09 /* QuestionListViewController.swift */,
+				B50DF98629717F8400715CC8 /* Cell */,
+				B50DF98529717F7B00715CC8 /* View */,
+			);
+			path = Questions;
+			sourceTree = "<group>";
+		};
+		B50DF98429717F5D00715CC8 /* Compare */ = {
+			isa = PBXGroup;
+			children = (
+				B50DF96F296AE85400715CC8 /* CompareViewController.swift */,
+			);
+			path = Compare;
+			sourceTree = "<group>";
+		};
+		B50DF98529717F7B00715CC8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B59A3F9C29685275001DEE09 /* QuestionView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B50DF98629717F8400715CC8 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B59A3F9A2968252F001DEE09 /* QuestionCollectioViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		B50DF98729717F8900715CC8 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B50DF96D2969A9A700715CC8 /* DragTextCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		B50DF98829717F9700715CC8 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B50DF9692969919700715CC8 /* FillInTextCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		B5146C7A29719DB40031E027 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B5146C7829719DAE0031E027 /* Constraint+Priority.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		B597025D29671B4400F7E07F /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				B50DF96F296AE85400715CC8 /* CompareViewController.swift */,
-				B59A3FA129686020001DEE09 /* QuestionListViewController.swift */,
-				B5C9A6C4296565B7007DAB05 /* DragTextViewController.swift */,
-				B597025E29671BD300F7E07F /* FillTextViewController.swift */,
-				B597025B2966D3D100F7E07F /* StarRatingViewController.swift */,
-				B59A3F9E29685299001DEE09 /* View */,
+				B50DF98429717F5D00715CC8 /* Compare */,
+				B50DF98329717F5800715CC8 /* Questions */,
+				B50DF98229717F5200715CC8 /* DragIn */,
+				B50DF98029717F4600715CC8 /* FillIn */,
+				B50DF98129717F4D00715CC8 /* Star */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -118,14 +209,6 @@
 				B50DF96B2969A1E300715CC8 /* TapticEngine.swift */,
 			);
 			path = Helper;
-			sourceTree = "<group>";
-		};
-		B59A3F9E29685299001DEE09 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				B59A3F9C29685275001DEE09 /* QuestionView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		B59A3FA729686B5B001DEE09 /* Model */ = {
@@ -159,6 +242,7 @@
 			children = (
 				B5C9A6C129656464007DAB05 /* App */,
 				B59A3F9929681E69001DEE09 /* Helper */,
+				B5146C7A29719DB40031E027 /* Extension */,
 				B50DF9642969730A00715CC8 /* JsonMockData */,
 				B59A3FA729686B5B001DEE09 /* Model */,
 				B50DF973296C722F00715CC8 /* Subclass */,
@@ -184,19 +268,8 @@
 			children = (
 				B5C9A6C929657947007DAB05 /* TabBar */,
 				B597025D29671B4400F7E07F /* Main */,
-				B5C9A6C829657943007DAB05 /* Cell */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		B5C9A6C829657943007DAB05 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				B50DF96D2969A9A700715CC8 /* DragTextCollectionViewCell.swift */,
-				B50DF9692969919700715CC8 /* FillInTextCollectionViewCell.swift */,
-				B59A3F9A2968252F001DEE09 /* QuestionCollectioViewCell.swift */,
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 		B5C9A6C929657947007DAB05 /* TabBar */ = {
@@ -284,6 +357,7 @@
 				B50DF96E2969A9A700715CC8 /* DragTextCollectionViewCell.swift in Sources */,
 				B50DF9632969677800715CC8 /* JsonDecoder.swift in Sources */,
 				B59A3FA629686B57001DEE09 /* QuestionsResult.swift in Sources */,
+				B5146C7729718C1D0031E027 /* LabelWithBigTapArea.swift in Sources */,
 				B59A3FA429686700001DEE09 /* CompLayoutSection.swift in Sources */,
 				B50DF96C2969A1E300715CC8 /* TapticEngine.swift in Sources */,
 				B59A3F9D29685275001DEE09 /* QuestionView.swift in Sources */,
@@ -292,6 +366,7 @@
 				B5C9A6B229656433007DAB05 /* MainTabBarViewController.swift in Sources */,
 				B5C9A6AE29656433007DAB05 /* AppDelegate.swift in Sources */,
 				B59A3F9829681E66001DEE09 /* Animation.swift in Sources */,
+				B5146C7C2971AB810031E027 /* TextFieldWithBigTapArea.swift in Sources */,
 				B50DF96829698C7500715CC8 /* FillInQuestion.swift in Sources */,
 				B50DF977296D664A00715CC8 /* LabelWithPadding.swift in Sources */,
 				B597025F29671BD300F7E07F /* FillTextViewController.swift in Sources */,
@@ -299,6 +374,7 @@
 				B50DF972296C722B00715CC8 /* MainButton.swift in Sources */,
 				B5C9A6C5296565B7007DAB05 /* DragTextViewController.swift in Sources */,
 				B5C9A6B029656433007DAB05 /* SceneDelegate.swift in Sources */,
+				B5146C7929719DAE0031E027 /* Constraint+Priority.swift in Sources */,
 				B50DF96A2969919700715CC8 /* FillInTextCollectionViewCell.swift in Sources */,
 				B597025C2966D3D100F7E07F /* StarRatingViewController.swift in Sources */,
 			);
@@ -446,7 +522,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -477,7 +553,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

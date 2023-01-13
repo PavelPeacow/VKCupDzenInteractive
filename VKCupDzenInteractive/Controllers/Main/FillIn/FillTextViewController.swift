@@ -15,6 +15,9 @@ final class FillTextViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout(section: .createFillInTextSection())
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        if #available(iOS 16, *) {
+            collection.selfSizingInvalidation = .disabled
+        }
         collection.register(FillInTextCollectionViewCell.self, forCellWithReuseIdentifier: FillInTextCollectionViewCell.identifier)
         collection.dataSource = self
         

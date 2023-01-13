@@ -133,6 +133,7 @@ final class CompareViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = true
         label.clipsToBounds = true
+        label.isExclusiveTouch = true
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         label.addGestureRecognizer(panGesture)

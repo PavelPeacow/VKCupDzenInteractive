@@ -15,6 +15,9 @@ final class DragTextViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout(section: .createDragInTextSection())
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        if #available(iOS 16, *) {
+            collection.selfSizingInvalidation = .disabled
+        }
         collection.register(DragTextCollectionViewCell.self, forCellWithReuseIdentifier: DragTextCollectionViewCell.identifier)
         collection.dataSource = self
         

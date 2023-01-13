@@ -16,6 +16,9 @@ final class QuestionListViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout(section: .createMainSection())
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        if #available(iOS 16, *) {
+            collection.selfSizingInvalidation = .disabled
+        }
         collection.register(QuestionCollectioViewCell.self, forCellWithReuseIdentifier: QuestionCollectioViewCell.identifier)
         collection.dataSource = self
         
